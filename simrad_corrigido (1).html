@@ -1,0 +1,2639 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIMRAD — Sistema Nacional de Monitoramento da Radioterapia</title>
+  <meta name="description" content="Protótipo navegável do SIMRAD v4.0 — Sistema Nacional de Monitoramento da Radioterapia no SUS" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.cdnfonts.com/css/rawline" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚕️</text></svg>" />
+  <style>
+/* ============================================================
+   SIMRAD v4.0 — Design System GOV.BR
+   ============================================================ */
+:root {
+  --blue-warm-vivid-90: #071D41;
+  --blue-warm-vivid-80: #0C326F;
+  --blue-warm-vivid-70: #1351B4;
+  --blue-warm-vivid-60: #155BCB;
+  --blue-warm-vivid-50: #1E6EF2;
+  --blue-warm-20: #C5D4EB;
+  --blue-warm-10: #DAE6F8;
+  --blue-warm-5: #EDF3FF;
+  --green-cool-vivid-50: #168821;
+  --green-cool-vivid-10: #4AA85C;
+  --green-cool-5: #E3F5E1;
+  --red-vivid-50: #E52207;
+  --red-5: #FDE0DB;
+  --yellow-vivid-20: #FFCD07;
+  --yellow-vivid-10: #FFE066;
+  --yellow-5: #FFF5C2;
+  --purple-vivid-50: #7B61FF;
+  --purple-5: #F0EEFF;
+  --pure-0: #FFFFFF;
+  --gray-2: #F8F8F8;
+  --gray-5: #F0F0F0;
+  --gray-10: #E6E6E6;
+  --gray-20: #CCCCCC;
+  --gray-30: #ADADAD;
+  --gray-60: #636363;
+  --gray-80: #333333;
+  --gray-100: #1A1A1A;
+  --surface-bg: #F6F9FF;
+  --surface-card: var(--pure-0);
+  --shadow-xs: 0 1px 3px rgba(7,29,65,.06);
+  --shadow-sm: 0 2px 8px rgba(7,29,65,.08);
+  --shadow-md: 0 8px 24px rgba(7,29,65,.12);
+  --shadow-lg: 0 16px 48px rgba(7,29,65,.16);
+  --shadow-glow: 0 0 0 3px rgba(19,81,180,.18);
+  --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-xl: 28px; --radius-full: 999px;
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px; --sp-6:24px;
+  --sp-8:32px; --sp-10:40px; --sp-12:48px; --sp-16:64px;
+  --ease-out: cubic-bezier(.22,1,.36,1);
+  --ease-spring: cubic-bezier(.34,1.56,.64,1);
+  --duration-fast: 150ms; --duration-normal: 250ms; --duration-slow: 400ms;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'Rawline','Raleway',-apple-system,sans-serif;font-size:15px;line-height:1.6;color:var(--gray-80);background:var(--surface-bg);min-height:100vh;overflow-x:hidden}
+a{color:var(--blue-warm-vivid-70);text-decoration:none}
+a:hover{text-decoration:underline}
+img{max-width:100%;display:block}
+
+/* ── Skip Link ── */
+.skip-link{position:absolute;left:-9999px;top:0;background:var(--blue-warm-vivid-70);color:var(--pure-0);padding:var(--sp-2) var(--sp-4);border-radius:0 0 var(--radius-sm) var(--radius-sm);font-weight:700;z-index:9999}
+.skip-link:focus{left:var(--sp-4)}
+
+/* ── GOV.BR Top Bar ── */
+.gov-top-bar{background:var(--blue-warm-vivid-90);color:var(--pure-0);font-size:12px;padding:6px var(--sp-5);display:flex;align-items:center;justify-content:space-between;letter-spacing:.02em;position:relative;z-index:60}
+.gov-top-bar .gov-top-left{display:flex;align-items:center;gap:var(--sp-3)}
+.gov-top-bar .gov-top-right{display:flex;align-items:center;gap:var(--sp-1)}
+.gov-top-bar .gov-top-label{font-size:11px;opacity:.65;letter-spacing:.04em;font-weight:600;text-transform:uppercase}
+.gov-top-bar a{color:rgba(255,255,255,.8);font-weight:600;text-decoration:none;padding:3px 8px;border-radius:3px;transition:background var(--duration-fast)}
+.gov-top-bar a:hover{background:rgba(255,255,255,.12);color:var(--pure-0)}
+.gov-top-bar .sep{opacity:.25;margin:0 2px}
+.gov-top-bar .govbr-logo-text{font-size:14px;font-weight:900;letter-spacing:-.02em;color:var(--pure-0);display:flex;align-items:center;gap:4px}
+.gov-top-bar .govbr-logo-text span{color:var(--yellow-vivid-20)}
+
+/* ── Header ── */
+.br-header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);backdrop-filter:blur(16px) saturate(180%);border-bottom:1px solid var(--gray-10);transition:box-shadow var(--duration-normal) var(--ease-out)}
+.br-header.scrolled{box-shadow:var(--shadow-md)}
+.header-surface{max-width:1320px;margin:0 auto;padding:var(--sp-3) var(--sp-6);display:flex;justify-content:space-between;align-items:center;gap:var(--sp-4)}
+.header-brand{display:flex;align-items:center;gap:var(--sp-3);min-width:0}
+.brand-mark{width:72px;height:40px;object-fit:cover;object-position:left center;border-radius:var(--radius-sm);flex-shrink:0}
+.brand-texts{min-width:0}
+.brand-signature,.brand-subtitle{margin:0;font-size:11px;color:var(--gray-60);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand-title{margin:1px 0;font-size:22px;line-height:1.1;letter-spacing:.06em;color:var(--blue-warm-vivid-90);font-weight:800}
+.header-actions{display:flex;align-items:center;gap:var(--sp-2)}
+
+/* ── Buttons ── */
+button,.btn{border:none;cursor:pointer;font-family:inherit;font-size:14px;transition:all var(--duration-fast) var(--ease-out)}
+button:active{transform:scale(.97)}
+.icon-btn{width:40px;height:40px;border-radius:var(--radius-full);background:var(--gray-2);color:var(--blue-warm-vivid-70);display:grid;place-items:center;font-size:18px}
+.icon-btn:hover{background:var(--blue-warm-5)}
+.sign-in,.avatar-btn{border-radius:var(--radius-full);display:inline-flex;align-items:center;gap:var(--sp-2);padding:var(--sp-2) var(--sp-4);font-weight:700;font-size:13px}
+.sign-in{background:var(--blue-warm-vivid-70);color:var(--pure-0)}
+.sign-in:hover{background:var(--blue-warm-vivid-60);box-shadow:var(--shadow-glow)}
+.avatar-btn{background:var(--blue-warm-5);color:var(--blue-warm-vivid-80)}
+.avatar-btn:hover{background:var(--blue-warm-10)}
+.btn{padding:var(--sp-3) var(--sp-5);border-radius:var(--radius-full);font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-2);line-height:1.2;letter-spacing:.01em;position:relative;overflow:hidden}
+.btn.primary{background:linear-gradient(135deg,var(--blue-warm-vivid-70),var(--blue-warm-vivid-60));color:var(--pure-0);box-shadow:0 2px 8px rgba(19,81,180,.25)}
+.btn.primary:hover{background:linear-gradient(135deg,var(--blue-warm-vivid-60),var(--blue-warm-vivid-50));box-shadow:0 4px 16px rgba(19,81,180,.35);transform:translateY(-1px)}
+.btn.secondary{background:var(--blue-warm-5);color:var(--blue-warm-vivid-70);border:1px solid var(--blue-warm-20)}
+.btn.secondary:hover{background:var(--blue-warm-10)}
+.btn.tertiary{background:transparent;color:var(--gray-60)}
+.btn.tertiary:hover{background:var(--gray-5);color:var(--gray-80)}
+.btn.danger{background:var(--red-5);color:var(--red-vivid-50)}
+.btn.danger:hover{background:#fbd0c8}
+.btn.success-btn{background:var(--green-cool-5);color:var(--green-cool-vivid-50);border:1px solid #b5ddb9}
+.btn.success-btn:hover{background:#c8ecc7}
+.btn.lg{padding:var(--sp-4) var(--sp-8);font-size:16px}
+.btn.sm{padding:var(--sp-2) var(--sp-3);font-size:12px}
+.btn:disabled,.btn.disabled{opacity:.45;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+.btn .spinner-inline{width:16px;height:16px;border:2px solid rgba(255,255,255,.35);border-top-color:currentColor;border-radius:50%;animation:spin .7s linear infinite}
+
+/* ── Utilities ── */
+.hidden{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;clip:rect(0,0,0,0);overflow:hidden}
+
+/* ── App Shell ── */
+.app-shell{max-width:1320px;margin:0 auto;display:grid;grid-template-columns:220px 1fr;gap:var(--sp-4);padding:var(--sp-4) var(--sp-5);min-height:calc(100vh - 160px)}
+.app-shell.no-sidebar{grid-template-columns:1fr!important;max-width:960px}
+
+/* ── Menu Status Badge ── */
+.menu-status {
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 700;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.menu-status.ok      { background: var(--green-cool-vivid-50,#21825c); color: #fff; }
+.menu-status.pending { background: var(--yellow-vivid-20,#fad980); color: #3d3d3d; }
+
+/* ── Side Menu ── */
+.side-menu{display:block;background:var(--surface-card);border-radius:var(--radius-md);border:1px solid var(--gray-10);padding:var(--sp-3) var(--sp-2);height:fit-content;position:sticky;top:80px;box-shadow:var(--shadow-xs)}
+.menu-label{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gray-30);padding:var(--sp-2) var(--sp-3) var(--sp-1)}
+.side-menu nav a{display:flex;align-items:center;gap:var(--sp-2);padding:var(--sp-2) var(--sp-3);border-radius:var(--radius-sm);color:var(--gray-60);font-size:13.5px;font-weight:500;transition:all var(--duration-fast) var(--ease-out);text-decoration:none;margin-bottom:1px;border-left:2px solid transparent;position:relative}
+.side-menu nav a:hover{background:var(--blue-warm-5);color:var(--blue-warm-vivid-70);border-left-color:var(--blue-warm-20)}
+.side-menu nav a.active{background:linear-gradient(90deg,var(--blue-warm-5),rgba(197,212,235,.3));color:var(--blue-warm-vivid-70);font-weight:700;border-left-color:var(--blue-warm-vivid-70)}
+.side-menu nav a i{width:18px;text-align:center;font-size:15px}
+.menu-divider{height:1px;background:var(--gray-10);margin:var(--sp-2) var(--sp-3)}
+.menu-badge{margin-left:auto;background:var(--red-vivid-50);color:var(--pure-0);font-size:10px;font-weight:800;border-radius:var(--radius-full);padding:1px 6px}
+
+/* ── Content Area ── */
+.content-area{min-width:0;display:flex;flex-direction:column;gap:var(--sp-5)}
+
+/* ── Hero ── */
+.hero{background:linear-gradient(135deg,var(--blue-warm-vivid-90) 0%,var(--blue-warm-vivid-80) 60%,#0d3b8a 100%);color:var(--pure-0);border-radius:var(--radius-lg);padding:var(--sp-8) var(--sp-10);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(21,91,203,.3),transparent 70%);bottom:-150px;right:-80px;pointer-events:none}
+.hero h2{font-size:26px;font-weight:800;margin-bottom:var(--sp-2);position:relative}
+.hero p{font-size:14px;color:rgba(220,232,255,.85);max-width:60ch;position:relative}
+.hero-meta{margin-top:var(--sp-4);display:flex;gap:var(--sp-4);flex-wrap:wrap;position:relative}
+.hero-chip{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:var(--radius-full);padding:var(--sp-1) var(--sp-4);font-size:12px;color:rgba(220,232,255,.9);display:flex;align-items:center;gap:var(--sp-2)}
+
+/* ── KPIs ── */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-4)}
+.kpi{background:var(--surface-card);border-radius:var(--radius-md);border:1px solid var(--gray-10);padding:var(--sp-5);transition:box-shadow var(--duration-normal),transform var(--duration-normal);box-shadow:var(--shadow-xs)}
+.kpi:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.kpi-icon{width:44px;height:44px;border-radius:var(--radius-sm);display:grid;place-items:center;font-size:18px;margin-bottom:var(--sp-3)}
+.kpi-icon.blue{background:var(--blue-warm-5);color:var(--blue-warm-vivid-70)}
+.kpi-icon.green{background:var(--green-cool-5);color:var(--green-cool-vivid-50)}
+.kpi-icon.yellow{background:var(--yellow-5);color:#7a5800}
+.kpi-icon.red{background:var(--red-5);color:var(--red-vivid-50)}
+.kpi-icon.purple{background:var(--purple-5);color:var(--purple-vivid-50)}
+.kpi .label{font-size:12px;color:var(--gray-60);margin-bottom:var(--sp-1)}
+.kpi .value{font-size:28px;font-weight:800;color:var(--gray-100);line-height:1}
+.kpi .sublabel{font-size:11px;color:var(--gray-30);margin-top:var(--sp-1)}
+.kpi .trend{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:2px 8px;border-radius:var(--radius-full);margin-top:var(--sp-2)}
+.kpi .trend.up{background:var(--green-cool-5);color:var(--green-cool-vivid-50)}
+.kpi .trend.down{background:var(--red-5);color:var(--red-vivid-50)}
+
+/* ── Page Card ── */
+.page-card{background:var(--surface-card);border-radius:var(--radius-md);border:1px solid var(--gray-10);padding:var(--sp-6);box-shadow:var(--shadow-xs)}
+
+/* ── Section Header ── */
+.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--sp-4);flex-wrap:wrap;gap:var(--sp-2)}
+.section-header h3{font-size:18px;font-weight:700;color:var(--blue-warm-vivid-90)}
+.section-header p{font-size:13px;color:var(--gray-60);margin-top:var(--sp-1)}
+
+/* ── Table ── */
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{text-align:left;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-60);padding:var(--sp-3) var(--sp-4);border-bottom:2px solid var(--gray-10)}
+.data-table td{padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--gray-5);font-size:14px;color:var(--gray-80)}
+.data-table tr:hover td{background:var(--blue-warm-5)}
+.data-table tr:last-child td{border-bottom:none}
+
+/* ── Pills / Badges ── */
+.pill{display:inline-flex;align-items:center;gap:var(--sp-1);padding:2px 10px;border-radius:var(--radius-full);font-size:12px;font-weight:700}
+.pill.success{background:var(--green-cool-5);color:var(--green-cool-vivid-50)}
+.pill.warning{background:var(--yellow-5);color:#7a5800}
+.pill.danger{background:var(--red-5);color:var(--red-vivid-50)}
+.pill.info{background:var(--blue-warm-5);color:var(--blue-warm-vivid-70)}
+.pill.neutral{background:var(--gray-5);color:var(--gray-60)}
+
+/* ── Message Boxes ── */
+.message{display:flex;gap:var(--sp-3);align-items:flex-start;padding:var(--sp-4);border-radius:var(--radius-sm);font-size:14px}
+.message.info{background:var(--blue-warm-5);border-left:3px solid var(--blue-warm-vivid-70);color:var(--blue-warm-vivid-80)}
+.message.warning{background:var(--yellow-5);border-left:3px solid var(--yellow-vivid-20);color:#5a4000}
+.message.success{background:var(--green-cool-5);border-left:3px solid var(--green-cool-vivid-50);color:#0f5416}
+.message.danger{background:var(--red-5);border-left:3px solid var(--red-vivid-50);color:#9e1000}
+.message i{margin-top:2px;flex-shrink:0}
+
+/* ── Forms ── */
+.field{display:flex;flex-direction:column;gap:var(--sp-1)}
+.field label{font-size:13px;font-weight:700;color:var(--gray-80);display:flex;align-items:center;gap:4px}
+.field label .req-mark{color:var(--red-vivid-50);font-size:14px;line-height:1}
+.field label.required::after{content:' *';color:var(--red-vivid-50)}
+.field input,.field select,.field textarea{width:100%;padding:10px var(--sp-4);min-height:44px;border:1.5px solid var(--gray-20);border-radius:var(--radius-sm);font-family:inherit;font-size:14px;color:var(--gray-100);background:var(--pure-0);transition:border-color var(--duration-fast),box-shadow var(--duration-fast);outline:none;appearance:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue-warm-vivid-70);box-shadow:var(--shadow-glow)}
+.field input:invalid:not(:placeholder-shown){border-color:var(--red-vivid-50)}
+.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23636363' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+.field small{font-size:12px;color:var(--gray-60)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-4)}
+.field-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-3)}
+
+/* ── Wizard ── */
+.wizard{background:var(--surface-card);border-radius:var(--radius-md);border:1px solid var(--gray-10);overflow:hidden;box-shadow:var(--shadow-xs)}
+.wizard-header{padding:var(--sp-6) var(--sp-6) var(--sp-4);border-bottom:1px solid var(--gray-5)}
+.wizard-header h3{font-size:20px;font-weight:800;color:var(--blue-warm-vivid-90)}
+.wizard-header p{font-size:13px;color:var(--gray-60);margin-top:4px}
+.wizard-steps{display:flex;gap:0;padding:var(--sp-5) var(--sp-6);background:var(--gray-2);overflow-x:auto}
+.step{display:flex;flex-direction:column;align-items:center;flex:1;position:relative;min-width:90px}
+.step:not(:last-child)::after{content:'';position:absolute;top:20px;left:calc(50% + 22px);right:calc(-50% + 22px);height:2px;background:var(--gray-20);transition:background var(--duration-slow)}
+.step.done:not(:last-child)::after{background:var(--green-cool-vivid-50)}
+.step-indicator{width:40px;height:40px;border-radius:50%;border:2px solid var(--gray-20);display:grid;place-items:center;font-size:14px;font-weight:700;background:var(--pure-0);color:var(--gray-60);transition:all var(--duration-normal);z-index:1;position:relative}
+.step.done .step-indicator{background:var(--green-cool-vivid-50);border-color:var(--green-cool-vivid-50);color:var(--pure-0)}
+.step.active .step-indicator{border-color:var(--blue-warm-vivid-70);color:var(--blue-warm-vivid-70);background:var(--blue-warm-5);animation:pulse 2s ease infinite}
+.step-label{font-size:11px;font-weight:600;color:var(--gray-60);margin-top:var(--sp-2);text-align:center;max-width:80px;word-break:break-word}
+.step.active .step-label{color:var(--blue-warm-vivid-70);font-weight:700}
+.step.done .step-label{color:var(--green-cool-vivid-50)}
+.wizard-body{padding:var(--sp-6)}
+.wizard-nav{padding:var(--sp-4) var(--sp-6);border-top:1px solid var(--gray-5);display:flex;justify-content:space-between;align-items:center;background:var(--gray-2)}
+.wizard-nav .right{display:flex;gap:var(--sp-3)}
+
+/* ── Repeat Items ── */
+.repeat-list{display:flex;flex-direction:column;gap:var(--sp-3);margin-bottom:var(--sp-3)}
+.repeat-item{background:var(--gray-2);border:1px solid var(--gray-10);border-radius:var(--radius-sm);padding:var(--sp-4)}
+.item-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--sp-3)}
+.item-number{font-size:13px;font-weight:700;color:var(--blue-warm-vivid-70)}
+.btn-remove{width:28px;height:28px;border-radius:var(--radius-full);background:var(--red-5);color:var(--red-vivid-50);border:none;cursor:pointer;display:grid;place-items:center;font-size:12px;opacity:.7;transition:opacity var(--duration-fast)}
+.btn-remove:hover{opacity:1}
+
+/* ── Summary Cards ── */
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-4)}
+.summary-card{background:var(--gray-2);border-radius:var(--radius-sm);border:1px solid var(--gray-10);padding:var(--sp-4)}
+.summary-card h4{font-size:14px;font-weight:700;color:var(--blue-warm-vivid-90);margin:var(--sp-3) 0 var(--sp-3)}
+.summary-row{display:flex;justify-content:space-between;padding:var(--sp-2) 0;border-bottom:1px solid var(--gray-10);font-size:13px}
+.summary-row:last-child{border-bottom:none}
+.summary-row .sr-label{color:var(--gray-60)}
+.summary-row .sr-value{font-weight:600;color:var(--gray-100);text-align:right;max-width:60%}
+
+/* ── Profile Grid ── */
+.grid-profiles{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-4);margin-top:var(--sp-6)}
+.profile-card{background:var(--surface-card);border:2px solid var(--gray-10);border-radius:var(--radius-lg);padding:var(--sp-6);cursor:pointer;transition:all var(--duration-normal) var(--ease-out);text-align:center}
+.profile-card:hover{border-color:var(--blue-warm-vivid-70);transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.profile-icon{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-size:22px;margin:0 auto var(--sp-4)}
+.profile-icon.blue{background:var(--blue-warm-5);color:var(--blue-warm-vivid-70)}
+.profile-icon.green{background:var(--green-cool-5);color:var(--green-cool-vivid-50)}
+.profile-icon.purple{background:var(--purple-5);color:var(--purple-vivid-50)}
+.profile-card h4{font-size:16px;font-weight:800;margin-bottom:var(--sp-2);color:var(--blue-warm-vivid-90)}
+
+/* ── Radio Group ── */
+.radio-group{display:flex;flex-direction:column;gap:var(--sp-3)}
+.radio-option{display:flex;align-items:center;gap:var(--sp-3);padding:var(--sp-4);border:2px solid var(--gray-10);border-radius:var(--radius-sm);cursor:pointer;transition:all var(--duration-fast)}
+.radio-option:hover{border-color:var(--blue-warm-vivid-70);background:var(--blue-warm-5)}
+.radio-option.selected{border-color:var(--blue-warm-vivid-70);background:var(--blue-warm-5)}
+.radio-option input{accent-color:var(--blue-warm-vivid-70);width:18px;height:18px;flex-shrink:0}
+.radio-option .ro-info{flex:1}
+.radio-option .ro-title{font-weight:700;font-size:14px;color:var(--gray-100)}
+.radio-option .ro-desc{font-size:12px;color:var(--gray-60);margin-top:2px}
+
+/* ── Action Cards ── */
+.actions{display:flex;gap:var(--sp-3);flex-wrap:wrap;justify-content:center;margin-top:var(--sp-6)}
+
+/* ── Progress Steps (Sidebar progress) ── */
+.progress-list{display:flex;flex-direction:column;gap:0}
+.progress-item{display:flex;align-items:center;gap:var(--sp-3);padding:var(--sp-3);border-radius:var(--radius-sm);cursor:pointer;transition:background var(--duration-fast)}
+.progress-item:hover{background:var(--blue-warm-5)}
+.progress-check{width:28px;height:28px;border-radius:50%;border:2px solid var(--gray-20);display:grid;place-items:center;font-size:12px;color:var(--gray-30);flex-shrink:0}
+.progress-item.completed .progress-check{background:var(--green-cool-vivid-50);border-color:var(--green-cool-vivid-50);color:var(--pure-0)}
+.progress-item.current .progress-check{border-color:var(--blue-warm-vivid-70);color:var(--blue-warm-vivid-70);animation:pulse 2s ease infinite}
+.progress-info{flex:1}
+.progress-title{font-weight:700;font-size:14px;color:var(--gray-80)}
+.progress-desc{font-size:12px;color:var(--gray-60);margin-top:1px}
+
+/* ── Login ── */
+.login-page{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 80px)}
+.login-banner{background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),linear-gradient(160deg,var(--blue-warm-vivid-90) 0%,var(--blue-warm-vivid-80) 40%,#0d3b8a 100%);color:var(--pure-0);display:flex;flex-direction:column;justify-content:center;padding:var(--sp-16) var(--sp-12);position:relative;overflow:hidden}
+.login-banner::before{content:'';position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(21,91,203,.25),transparent 70%);bottom:-200px;right:-100px}
+.login-banner h1{font-size:38px;font-weight:800;line-height:1.15;margin-bottom:var(--sp-4);position:relative}
+.login-banner .banner-desc{font-size:16px;line-height:1.65;color:rgba(220,232,255,.85);max-width:44ch;position:relative}
+.login-banner .banner-features{margin-top:var(--sp-8);display:grid;gap:var(--sp-4);position:relative}
+.feature{display:flex;gap:var(--sp-3);align-items:center}
+.feature-icon{width:40px;height:40px;border-radius:var(--radius-sm);background:rgba(255,255,255,.1);display:grid;place-items:center;flex-shrink:0}
+.feature-text{font-size:14px;color:rgba(220,232,255,.9)}
+.login-form-area{display:flex;flex-direction:column;justify-content:center;padding:var(--sp-16) var(--sp-12);background:var(--surface-bg)}
+.login-form-card{max-width:420px;width:100%}
+.login-form-card .logo-section{margin-bottom:var(--sp-8)}
+.login-form-card .logo-section h2{font-size:28px;font-weight:800;color:var(--blue-warm-vivid-90);margin-bottom:var(--sp-1)}
+.login-form-card .logo-section p{color:var(--gray-60);font-size:14px}
+/* Botão gov.br — amarelo oficial */
+.govbr-btn{width:100%;padding:var(--sp-4) var(--sp-6);border-radius:var(--radius-sm);background:#FFCD07;color:#1A1A1A;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:var(--sp-3);border:none;cursor:pointer;transition:all var(--duration-normal) var(--ease-out);box-shadow:0 4px 16px rgba(255,205,7,.4)}
+.govbr-btn:hover{background:#f0bf00;box-shadow:0 6px 24px rgba(255,205,7,.5);transform:translateY(-2px)}
+.govbr-btn:active{transform:translateY(0)}
+.govbr-icon{width:28px;height:28px;background:rgba(0,0,0,.1);border-radius:var(--radius-sm);display:grid;place-items:center;font-size:16px;flex-shrink:0}
+.login-help{margin-top:var(--sp-6);padding-top:var(--sp-6);border-top:1px solid var(--gray-10)}
+.login-help p{font-size:13px;color:var(--gray-60);margin-bottom:var(--sp-2)}
+.login-help a{font-weight:600}
+
+/* ── Dashboard Sections ── */
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-4)}
+.semaforo-item{display:flex;justify-content:space-between;align-items:center;padding:var(--sp-3) 0;border-bottom:1px solid var(--gray-5)}
+.semaforo-item:last-child{border-bottom:none}
+.semaforo-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.semaforo-dot.verde{background:var(--green-cool-vivid-50)}
+.semaforo-dot.amarelo{background:var(--yellow-vivid-20)}
+.semaforo-dot.vermelho{background:var(--red-vivid-50)}
+.progress-bar-wrap{background:var(--gray-10);border-radius:var(--radius-full);height:8px;overflow:hidden;margin-top:var(--sp-2)}
+.progress-bar-fill{height:100%;border-radius:var(--radius-full);transition:width var(--duration-slow) var(--ease-out)}
+.progress-bar-fill.blue{background:var(--blue-warm-vivid-70)}
+.progress-bar-fill.green{background:var(--green-cool-vivid-50)}
+.progress-bar-fill.yellow{background:var(--yellow-vivid-20)}
+.progress-bar-fill.red{background:var(--red-vivid-50)}
+
+/* ── Capacity Card ── */
+.capacity-card{background:var(--surface-card);border:1px solid var(--gray-10);border-radius:var(--radius-md);padding:var(--sp-5)}
+.capacity-card h4{font-size:15px;font-weight:700;color:var(--blue-warm-vivid-90);margin-bottom:var(--sp-4)}
+.capacity-row{display:flex;justify-content:space-between;align-items:center;padding:var(--sp-2) 0;font-size:14px}
+.cap-label{color:var(--gray-60)}
+.cap-value{font-weight:800;font-size:22px;color:var(--blue-warm-vivid-70)}
+.capacity-divider{height:1px;background:var(--gray-10);margin:var(--sp-2) 0}
+
+/* ── Success Screen ── */
+.success-screen{text-align:center;padding:var(--sp-12)}
+.success-icon{font-size:64px;color:var(--green-cool-vivid-50);margin-bottom:var(--sp-4);animation:bounceIn .6s var(--ease-spring)}
+.success-screen h2{font-size:24px;font-weight:800;color:var(--blue-warm-vivid-90);margin-bottom:var(--sp-2)}
+.success-screen p{color:var(--gray-60);max-width:50ch;margin:0 auto}
+
+/* ── Toast ── */
+.toast-container{position:fixed;bottom:var(--sp-6);right:var(--sp-6);z-index:100;display:flex;flex-direction:column;gap:var(--sp-2);pointer-events:none}
+.toast{display:flex;align-items:flex-start;gap:var(--sp-3);background:var(--pure-0);border-radius:var(--radius-md);box-shadow:var(--shadow-lg);padding:var(--sp-4);min-width:280px;max-width:360px;pointer-events:all;animation:slideUp var(--duration-normal) var(--ease-out)}
+.toast.closing{animation:slideDown var(--duration-fast) var(--ease-out) forwards}
+.toast.success .toast-icon{color:var(--green-cool-vivid-50)}
+.toast.error .toast-icon{color:var(--red-vivid-50)}
+.toast.info .toast-icon{color:var(--blue-warm-vivid-70)}
+.toast.warning .toast-icon{color:#7a5800}
+.toast-icon{font-size:20px;flex-shrink:0;margin-top:2px}
+.toast-body{flex:1}
+.toast-title{font-weight:700;font-size:14px;color:var(--gray-100)}
+.toast-text{font-size:13px;color:var(--gray-60);margin-top:2px}
+.toast-close{background:none;border:none;cursor:pointer;color:var(--gray-30);padding:2px;font-size:14px;flex-shrink:0}
+.toast-close:hover{color:var(--gray-60)}
+
+/* ── Modal ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(7,29,65,.55);z-index:200;display:grid;place-items:center;animation:fadeIn var(--duration-fast)}
+.modal{background:var(--pure-0);border-radius:var(--radius-lg);padding:var(--sp-8);max-width:440px;width:90%;box-shadow:var(--shadow-lg);animation:scaleIn var(--duration-normal) var(--ease-spring);text-align:center}
+.modal h3{font-size:18px;font-weight:800;color:var(--gray-100);margin-bottom:var(--sp-3)}
+.modal p{color:var(--gray-60);font-size:14px;line-height:1.65}
+.modal-actions{display:flex;gap:var(--sp-3);justify-content:center;margin-top:var(--sp-6)}
+
+/* ── Session Bar ── */
+.session-bar{position:fixed;bottom:0;left:0;right:0;z-index:90;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-top:1px solid var(--gray-10);padding:var(--sp-2) var(--sp-6);display:flex;justify-content:flex-end;align-items:center;gap:var(--sp-3);font-size:12px;color:var(--gray-60)}
+.session-bar i{color:var(--blue-warm-vivid-70)}
+
+/* ── Footer ── */
+.br-footer{border-top:1px solid var(--gray-10);color:var(--gray-60);font-size:12px;background:var(--pure-0);margin-bottom:0}
+.br-footer-inner{max-width:1320px;margin:0 auto;padding:0 var(--sp-5)}
+.br-footer-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:var(--sp-4);padding:var(--sp-5) 0;border-bottom:1px solid var(--gray-5)}
+.br-footer-logo{display:flex;align-items:center;gap:var(--sp-3)}
+.br-footer-logo .footer-ms{width:36px;height:36px;background:linear-gradient(135deg,var(--blue-warm-vivid-90),var(--blue-warm-vivid-70));border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:10px;flex-shrink:0}
+.br-footer-logo .footer-brand{font-size:13px;font-weight:700;color:var(--blue-warm-vivid-90)}
+.br-footer-logo .footer-brand span{display:block;font-size:11px;font-weight:400;color:var(--gray-60)}
+.br-footer-access{display:flex;align-items:center;gap:var(--sp-2)}
+.btn-access{padding:5px 10px;border-radius:var(--radius-sm);background:var(--gray-5);border:1px solid var(--gray-20);color:var(--gray-60);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--duration-fast);font-family:inherit}
+.btn-access:hover{background:var(--gray-10);color:var(--gray-80)}
+.btn-access.active{background:var(--blue-warm-5);border-color:var(--blue-warm-vivid-70);color:var(--blue-warm-vivid-70)}
+.br-footer-bottom{padding:var(--sp-4) 0;text-align:center}
+.br-footer-bottom p{margin:var(--sp-1) 0}
+.br-footer-bottom strong{color:var(--gray-80)}
+.br-footer-links{display:flex;justify-content:center;gap:var(--sp-4);margin-top:var(--sp-2);flex-wrap:wrap}
+.br-footer-links a{color:var(--blue-warm-vivid-70);font-size:12px;font-weight:600}
+
+/* ── Tabs ── */
+.tab-bar{display:flex;border-bottom:2px solid var(--gray-10);gap:0;margin-bottom:var(--sp-5);overflow-x:auto}
+.tab-btn{padding:var(--sp-3) var(--sp-5);font-size:14px;font-weight:600;color:var(--gray-60);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all var(--duration-fast);white-space:nowrap}
+.tab-btn:hover{color:var(--blue-warm-vivid-70)}
+.tab-btn.active{color:var(--blue-warm-vivid-70);border-bottom-color:var(--blue-warm-vivid-70);font-weight:700}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* ── Incentive Faixa ── */
+.faixa-card{border-radius:var(--radius-md);border:2px solid var(--gray-10);padding:var(--sp-5);transition:all var(--duration-normal)}
+.faixa-card.ativa{border-color:var(--blue-warm-vivid-70);background:var(--blue-warm-5)}
+.faixa-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--sp-3)}
+.faixa-pct{font-size:32px;font-weight:800;color:var(--blue-warm-vivid-70)}
+.faixa-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-3);margin-top:var(--sp-4)}
+
+/* ── Notification Bell ── */
+.notif-badge{position:relative}
+.notif-badge .badge{position:absolute;top:-4px;right:-4px;background:var(--red-vivid-50);color:var(--pure-0);font-size:9px;font-weight:800;border-radius:var(--radius-full);width:16px;height:16px;display:flex;align-items:center;justify-content:center;border:2px solid var(--pure-0)}
+
+/* ── Animations ── */
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(19,81,180,.3)}50%{box-shadow:0 0 0 6px rgba(19,81,180,0)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideDown{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(12px)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+@keyframes bounceIn{0%{transform:scale(0)}60%{transform:scale(1.1)}100%{transform:scale(1)}}
+@keyframes kpiEnter{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pageEnter{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
+@keyframes countUp{from{opacity:0}to{opacity:1}}
+/* KPI stagger animation */
+.kpi:nth-child(1){animation:kpiEnter var(--duration-slow) var(--ease-out) both}
+.kpi:nth-child(2){animation:kpiEnter var(--duration-slow) var(--ease-out) 60ms both}
+.kpi:nth-child(3){animation:kpiEnter var(--duration-slow) var(--ease-out) 120ms both}
+.kpi:nth-child(4){animation:kpiEnter var(--duration-slow) var(--ease-out) 180ms both}
+/* Page content transition */
+.content-area{animation:pageEnter var(--duration-normal) var(--ease-out)}
+
+/* ── Responsive ── */
+/* Menu sempre visível (sticky) quando não está oculto por JS */
+.side-menu:not(.hidden) { display: block !important; }
+
+/* ── Mobile Menu Overlay ── */
+.menu-overlay{display:none;position:fixed;inset:0;background:rgba(7,29,65,.45);z-index:79;animation:fadeIn var(--duration-fast)}
+.menu-overlay.active{display:block}
+
+/* ══ TABLET (≤ 1024px) ══ */
+@media(max-width:1024px){
+  .app-shell{grid-template-columns:200px 1fr;gap:var(--sp-3);padding:var(--sp-3) var(--sp-4)}
+  .kpis{grid-template-columns:1fr 1fr;gap:var(--sp-3)}
+  .faixa-grid{grid-template-columns:1fr 1fr}
+  .dash-grid{grid-template-columns:1fr}
+  .header-surface{padding:var(--sp-2) var(--sp-4)}
+  .brand-title{font-size:18px}
+}
+
+/* ══ MOBILE GRANDE (≤ 768px) ══ */
+@media(max-width:768px){
+  /* Gov top bar: oculta links extras */
+  .gov-top-bar .gov-top-right a:not(:last-child){display:none}
+  .gov-top-bar{padding:5px var(--sp-4)}
+
+  /* Header compacto */
+  .header-surface{padding:var(--sp-2) var(--sp-3);gap:var(--sp-2)}
+  .brand-title{font-size:16px;letter-spacing:.04em}
+  .brand-signature,.brand-subtitle{display:none}
+  .brand-mark{width:48px;height:32px}
+  .sign-in.compact span{display:none}
+  .sign-in.compact{padding:var(--sp-2);border-radius:var(--radius-full);min-width:36px;justify-content:center}
+  .avatar-btn #header-user-name{display:none}
+  .avatar-btn{padding:var(--sp-1) var(--sp-2)}
+
+  /* App shell: coluna única */
+  .app-shell{grid-template-columns:1fr;padding:var(--sp-3)}
+  .content-area{gap:var(--sp-4)}
+
+  /* Side menu: drawer lateral */
+  .side-menu:not(.hidden){
+    position:fixed;top:0;left:0;bottom:0;width:82vw;max-width:300px;
+    z-index:80;border-radius:0;box-shadow:var(--shadow-lg);
+    overflow-y:auto;padding-top:var(--sp-5);padding-bottom:var(--sp-10);
+    transform:translateX(-110%);
+    transition:transform var(--duration-normal) var(--ease-out);
+  }
+  .side-menu.mobile-open{transform:translateX(0)!important;}
+  .side-menu nav a{font-size:15px;padding:var(--sp-3) var(--sp-4)}
+
+  /* Login */
+  .login-page{grid-template-columns:1fr}
+  .login-banner{padding:var(--sp-6) var(--sp-5);min-height:auto}
+  .login-banner h1{font-size:24px}
+  .login-banner .banner-desc{font-size:14px}
+  .login-banner .banner-features{display:none}
+  .login-form-area{padding:var(--sp-6) var(--sp-5)}
+  .login-form-card{max-width:100%}
+
+  /* Hero */
+  .hero{padding:var(--sp-5) var(--sp-5);border-radius:var(--radius-md)}
+  .hero h2{font-size:18px}
+  .hero p{font-size:13px}
+  .hero-meta{gap:var(--sp-2)}
+  .hero-chip{font-size:11px;padding:var(--sp-1) var(--sp-3)}
+
+  /* KPIs: 2 colunas */
+  .kpis{grid-template-columns:1fr 1fr;gap:var(--sp-2)}
+  .kpi{padding:var(--sp-4)}
+  .kpi .value{font-size:22px}
+  .kpi-icon{width:36px;height:36px;font-size:16px;margin-bottom:var(--sp-2)}
+
+  /* Cards */
+  .page-card{padding:var(--sp-4);border-radius:var(--radius-sm)}
+  .section-header{flex-direction:column;align-items:flex-start;gap:var(--sp-1)}
+  .section-header h3{font-size:16px}
+
+  /* Tabelas: scroll horizontal */
+  .page-card{overflow-x:auto}
+  .data-table{min-width:480px}
+  .data-table th,.data-table td{padding:var(--sp-2) var(--sp-3);font-size:12px}
+
+  /* Grids */
+  .grid-profiles{grid-template-columns:1fr}
+  .summary-grid{grid-template-columns:1fr}
+  .faixa-grid{grid-template-columns:1fr 1fr}
+  .dash-grid{grid-template-columns:1fr}
+  .field-row,.field-grid{grid-template-columns:1fr}
+
+  /* Wizard */
+  .wizard-header{padding:var(--sp-4)}
+  .wizard-header h3{font-size:16px}
+  .wizard-body{padding:var(--sp-4)}
+  .wizard-nav{padding:var(--sp-3) var(--sp-4);flex-wrap:wrap;gap:var(--sp-2)}
+  .wizard-nav .right{flex-wrap:wrap;gap:var(--sp-2)}
+  .wizard-steps{padding:var(--sp-3) var(--sp-4);gap:var(--sp-1)}
+  .step:not(:last-child)::after{display:none}
+  .step-label{font-size:10px}
+  .step-indicator{width:32px;height:32px;font-size:12px}
+
+  /* Botões */
+  .btn{font-size:13px;padding:var(--sp-2) var(--sp-4)}
+  .btn.lg{font-size:14px;padding:var(--sp-3) var(--sp-5)}
+  .actions{flex-direction:column;align-items:stretch}
+  .actions .btn{width:100%;justify-content:center}
+
+  /* Toast */
+  .toast-container{bottom:var(--sp-4);right:var(--sp-3);left:var(--sp-3)}
+  .toast{min-width:0;max-width:100%}
+
+  /* Session bar */
+  .session-bar{padding:var(--sp-2) var(--sp-3);font-size:11px}
+
+  /* Tabs */
+  .tab-bar{gap:0;-webkit-overflow-scrolling:touch}
+  .tab-btn{padding:var(--sp-2) var(--sp-3);font-size:13px}
+
+  /* Footer */
+  .br-footer-top{flex-direction:column;align-items:flex-start;gap:var(--sp-3)}
+  .br-footer-links{gap:var(--sp-3)}
+}
+
+/* ══ MOBILE PEQUENO (≤ 400px) ══ */
+@media(max-width:400px){
+  .kpis{grid-template-columns:1fr}
+  .faixa-grid{grid-template-columns:1fr}
+  .kpi .value{font-size:20px}
+  .hero h2{font-size:16px}
+  .brand-title{font-size:14px}
+  .hero{padding:var(--sp-4)}
+}
+/* ── Alto Contraste ── */
+body.high-contrast{filter:invert(1) hue-rotate(180deg);background:#000}
+body.high-contrast img,body.high-contrast svg{filter:invert(1) hue-rotate(180deg)}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Pular para o conteúdo principal</a>
+
+  <div class="gov-top-bar" id="gov-top-bar">
+    <div class="gov-top-left">
+      <div class="govbr-logo-text">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="10" cy="10" r="9" stroke="#FFCD07" stroke-width="1.5"/>
+          <path d="M6 10h8M10 6v8" stroke="#FFCD07" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <span>gov<span>.br</span></span>
+      </div>
+      <span class="sep">|</span>
+      <span class="gov-top-label">Ministério da Saúde</span>
+    </div>
+    <div class="gov-top-right">
+      <a href="https://vlibras.gov.br" target="_blank" rel="noopener" aria-label="VLibras - Acessibilidade em Libras" title="VLibras">VLibras</a>
+      <span class="sep">|</span>
+      <a href="#" aria-label="Acessibilidade" title="Acessibilidade">Acessibilidade</a>
+      <span class="sep">|</span>
+      <a href="#" aria-label="Alto Contraste" title="Alto Contraste">Alto Contraste</a>
+      <span class="sep">|</span>
+      <a href="https://www.gov.br" target="_blank" rel="noopener" aria-label="Portal gov.br">Portal gov.br</a>
+    </div>
+  </div>
+
+  <header class="br-header" id="app-header">
+    <div class="header-surface">
+      <div class="header-brand">
+          <div style="width:72px;height:40px;display:flex;align-items:center;flex-shrink:0" aria-label="Ministério da Saúde">
+            <svg viewBox="0 0 72 40" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Brasão Ministério da Saúde">
+              <!-- Placeholder brasão MS simplificado -->
+              <rect width="72" height="40" rx="8" fill="#071D41"/>
+              <!-- Cruz verde MS -->
+              <rect x="30" y="10" width="12" height="20" rx="2" fill="#168821"/>
+              <rect x="24" y="16" width="24" height="8" rx="2" fill="#168821"/>
+              <!-- Letras MS -->
+              <text x="36" y="34" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-family="sans-serif" font-size="7" font-weight="700" letter-spacing="1">MS</text>
+            </svg>
+          </div>
+        <div class="brand-texts">
+          <p class="brand-signature">Ministério da Saúde | SAES</p>
+          <h1 class="brand-title">SIMRAD</h1>
+          <p class="brand-subtitle">Sistema Nacional de Monitoramento da Radioterapia</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn hidden" id="menu-toggle" aria-label="Abrir menu">
+          <span aria-hidden="true" style="font-style:normal">☰</span></i>
+        </button>
+        <div class="notif-badge hidden" id="notif-wrap">
+          <button class="icon-btn" id="notif-btn" aria-label="Notificações">
+            <span aria-hidden="true" style="font-style:normal">🔔</span></i>
+          </button>
+          <span class="badge" id="notif-count">3</span>
+        </div>
+        <button class="sign-in compact" id="header-auth-btn">
+          <span aria-hidden="true" style="font-style:normal">→</span></i>
+          <span>Entrar com gov.br</span>
+        </button>
+        <button class="avatar-btn hidden" id="header-avatar-btn" aria-label="Menu do usuário">
+          <span aria-hidden="true" style="font-style:normal;font-size:22px">👤</span></i>
+          <span id="header-user-name">Usuário</span>
+          <span aria-hidden="true" style="font-style:normal;font-size:10px">▾</span></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div id="menu-overlay" class="menu-overlay" aria-hidden="true"></div>
+
+  <div class="app-shell hidden" id="app-shell">
+    <aside class="side-menu" id="side-menu" aria-label="Navegação principal">
+      <p class="menu-label">Navegação</p>
+      <nav id="main-nav"></nav>
+    </aside>
+    <main id="main-content" class="content-area" role="main"></main>
+  </div>
+
+  <div id="login-area"></div>
+  <div class="toast-container" id="toast-container"></div>
+  <div id="modal-container"></div>
+
+  <div class="session-bar hidden" id="session-bar">
+    <span aria-hidden="true" style="font-style:normal">🛡</span></i>
+    <span>Sessão segura &nbsp;|&nbsp; Expira em <strong id="session-timer">30:00</strong></span>
+  </div>
+
+  <footer class="br-footer" role="contentinfo">
+    <div class="br-footer-inner">
+      <div class="br-footer-top">
+        <div class="br-footer-logo">
+          <div class="footer-ms" aria-hidden="true">
+            <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+              <rect x="13" y="5" width="10" height="26" rx="2" fill="rgba(255,255,255,.9)"/>
+              <rect x="5" y="13" width="26" height="10" rx="2" fill="rgba(255,255,255,.9)"/>
+            </svg>
+          </div>
+          <div class="footer-brand">
+            SIMRAD
+            <span>Sistema Nacional de Monitoramento da Radioterapia</span>
+          </div>
+        </div>
+        <div class="br-footer-access">
+          <span style="font-size:11px;color:var(--gray-60);margin-right:4px">Acessibilidade:</span>
+          <button class="btn-access" id="btn-font-minus" aria-label="Diminuir fonte" title="Diminuir fonte">A−</button>
+          <button class="btn-access" id="btn-font-plus" aria-label="Aumentar fonte" title="Aumentar fonte">A+</button>
+          <button class="btn-access" id="btn-contrast" aria-label="Alto contraste" title="Alto contraste">&#9681;</button>
+        </div>
+      </div>
+      <div class="br-footer-bottom">
+        <p><strong>Ministério da Saúde</strong> | Secretaria de Atenção Especializada à Saúde (SAES)</p>
+        <p>Protótipo navegável v4.0 &nbsp;•&nbsp; Portaria GM/MS nº 8.516/2025 &nbsp;•&nbsp; &copy; 2025 Ministério da Saúde</p>
+        <div class="br-footer-links">
+          <a href="#">Política de Privacidade</a>
+          <a href="#">Termos de Uso</a>
+          <a href="#">Fale Conosco</a>
+          <a href="https://www.gov.br/saude" target="_blank" rel="noopener">saude.gov.br</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+<script>
+/* ============================================================
+   SIMRAD v4.0 — Protótipo Navegável Completo
+   ============================================================ */
+
+// ── Estado Global ──────────────────────────────────────────────
+const state = {
+  isAuthenticated: false,
+  userName: "João da Silva",
+  userCpf: "***.***.***-01",
+  profile: null,
+  sessionMinutes: 30,
+  onboarding: {
+    completed: false,
+    cnes: "",
+    estabelecimento: "",
+    cnpj: "",
+    endereco: "",
+    municipio: "",
+    uf: "",
+    macro: "",
+    habilitacao: "",
+    emails: [""],
+    emailDirecao: "",
+    emailRT: "",
+    emailSupervisor: "",
+    telefone: "",
+    whatsapp: false,
+  },
+  equipamentos: {
+    completed: false,
+    aceleradores: [],
+    braquiterapia: [],
+    turnos: { diurno: 0, vespertino: 0, noturno: 0, fimSemana: 0 },
+  },
+  pacientes: [
+    { id:1, cpf:"***.456.789-**", nome:"M.A.S.", cid:"C50", modalidade:"Radioterapia Externa", fracoes:15, realizadas:8, inicio:"2025-04-01", status:"Em tratamento", cidade:"Goiânia - GO" },
+    { id:2, cpf:"***.123.456-**", nome:"J.P.F.", cid:"C61", modalidade:"Radioterapia Externa", fracoes:28, realizadas:20, inicio:"2025-03-15", status:"Em tratamento", cidade:"Aparecida de Goiânia - GO" },
+    { id:3, cpf:"***.789.012-**", nome:"A.M.C.", cid:"C53", modalidade:"Braquiterapia", fracoes:5, realizadas:5, inicio:"2025-03-01", status:"Concluído", cidade:"Anápolis - GO" },
+    { id:4, cpf:"***.234.567-**", nome:"L.S.O.", cid:"C34", modalidade:"Radioterapia Externa", fracoes:30, realizadas:2, inicio:"2025-04-10", status:"Em tratamento", cidade:"Goiânia - GO" },
+    { id:5, cpf:"***.567.890-**", nome:"R.B.N.", cid:"C67", modalidade:"Radioterapia Externa", fracoes:20, realizadas:20, inicio:"2025-03-10", status:"Concluído", cidade:"Trindade - GO" },
+  ],
+  notificacoes: [
+    { id:1, tipo:"warning", titulo:"Atualização pendente", texto:"Você ainda não atualizou os status dos pacientes nesta semana.", lida:false },
+    { id:2, tipo:"info", titulo:"Novo encaminhamento recebido", texto:"UNACON de Anápolis solicitou 2 vagas para pacientes C50.", lida:false },
+    { id:3, tipo:"success", titulo:"Equipamento validado", texto:"O Acelerador TrueBeam SN-2024-001 foi validado pelo MS.", lida:false },
+    { id:4, tipo:"info", titulo:"Lembrete semanal", texto:"A janela de atualização está aberta. Acesse e registre os status.", lida:true },
+  ],
+  // Fila de demanda — pacientes aguardando encaminhamento (de UNACONs sem rádio / gestores)
+  demanda: [
+    { id:101, cpf:"***.321.654-**", nome:"C.R.M.", cid:"C50", cidade:"Anápolis - GO", origem:"UNACON Anápolis", urgencia:"Alta",   diasEspera:18 },
+    { id:102, cpf:"***.654.987-**", nome:"P.A.L.", cid:"C61", cidade:"Rio Verde - GO",  origem:"Gestor Estadual GO", urgencia:"Normal", diasEspera:31 },
+    { id:103, cpf:"***.987.321-**", nome:"T.M.F.", cid:"C53", cidade:"Itumbiara - GO",  origem:"UNACON Itumbiara", urgencia:"Alta",   diasEspera:9  },
+    { id:104, cpf:"***.147.258-**", nome:"S.B.O.", cid:"C34", cidade:"Jataí - GO",     origem:"UNACON Jataí",     urgencia:"Normal", diasEspera:44 },
+  ],
+  // Serviços com vagas disponíveis (oferta)
+  servicos: [
+    { id:201, nome:"Hospital Araújo Jorge",        cidade:"Goiânia - GO",      dist:55,  vagasImediatas:3, vagasProjetadas:8,  habilitacao:"CACON"  },
+    { id:202, nome:"CACON Goiânia",                cidade:"Goiânia - GO",      dist:48,  vagasImediatas:1, vagasProjetadas:5,  habilitacao:"CACON"  },
+    { id:203, nome:"Complexo RT Caldas Novas",     cidade:"Caldas Novas - GO", dist:142, vagasImediatas:4, vagasProjetadas:12, habilitacao:"Complexo" },
+    { id:204, nome:"Serviço Isolado Anápolis",     cidade:"Anápolis - GO",     dist:0,   vagasImediatas:2, vagasProjetadas:6,  habilitacao:"Isolado" },
+  ],
+  // Encaminhamentos já registrados
+  encaminhamentos: [
+    { id:301, pacienteId:101, cpf:"***.456.789-**", cid:"C50", origem:"UNACON Anápolis",    destino:"Hospital Araújo Jorge – Goiânia", dist:"55 km", status:"Aguardando confirmação", slaHoras:38 },
+    { id:302, pacienteId:102, cpf:"***.111.222-**", cid:"C61", origem:"Gestor Estadual GO", destino:"CACON Goiânia",                    dist:"48 km", status:"Confirmado",            slaHoras:null },
+    { id:303, pacienteId:103, cpf:"***.333.444-**", cid:"C53", origem:"UNACON Rio Verde",   destino:"Complexo RT Caldas Novas",         dist:"142 km",status:"Em análise",            slaHoras:42 },
+  ],
+};
+
+
+// ── Icon helper (replaces Font Awesome) ──────────────────────
+const ICONS = {
+  "fa-arrow-left":"←","fa-arrow-right":"→","fa-arrow-up":"↑",
+  "fa-arrows-rotate":"↺","fa-bars":"☰","fa-bell":"🔔",
+  "fa-calendar-check":"📅","fa-calendar-day":"📅","fa-calendar-week":"📅",
+  "fa-chart-line":"📈","fa-check":"✓","fa-chevron-down":"▾",
+  "fa-circle":"●","fa-circle-check":"✅","fa-circle-info":"ℹ",
+  "fa-circle-question":"❓","fa-circle-user":"👤","fa-circle-xmark":"✕",
+  "fa-clipboard-check":"📋","fa-clock":"⏱","fa-coins":"💰",
+  "fa-door-open":"🚪","fa-envelope":"✉","fa-file-invoice-dollar":"🧾",
+  "fa-hospital":"🏥","fa-hospital-user":"🏥","fa-hourglass-half":"⏳",
+  "fa-landmark":"🏛","fa-list":"≡","fa-magnifying-glass":"🔍",
+  "fa-map":"🗺","fa-moon":"🌙","fa-paper-plane":"✉","fa-pen":"✏",
+  "fa-percent":"%","fa-plus":"+","fa-radiation":"☢",
+  "fa-right-to-bracket":"→","fa-rotate":"↺","fa-route":"↔",
+  "fa-scale-balanced":"⚖","fa-shield-halved":"🛡","fa-sitemap":"⊞",
+  "fa-sun":"☀","fa-cloud-sun":"⛅","fa-tools":"🔧","fa-trash-can":"🗑",
+  "fa-triangle-exclamation":"⚠","fa-trophy":"🏆","fa-user-plus":"👤",
+  "fa-users":"👥","fa-xmark":"✕","fa-building-columns":"🏛",
+  "fa-building":"🏢",
+};
+function icon(name, style="") {
+  const em = ICONS[name] || "•";
+  return `<span aria-hidden="true" style="font-style:normal;${style}">${em}</span>`;
+}
+
+// ── DOM Refs ───────────────────────────────────────────────────
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => document.querySelectorAll(s);
+const content = $("#main-content");
+const loginArea = $("#login-area");
+const appShell = $("#app-shell");
+const headerAuthBtn = $("#header-auth-btn");
+const headerAvatarBtn = $("#header-avatar-btn");
+const headerUserName = $("#header-user-name");
+const sideMenu = $("#side-menu");
+const menuToggle = $("#menu-toggle");
+const toastContainer = $("#toast-container");
+const modalContainer = $("#modal-container");
+const sessionBar = $("#session-bar");
+const sessionTimer = $("#session-timer");
+
+// ── Routes ─────────────────────────────────────────────────────
+const routes = {
+  "#/login": renderLogin,
+  "#/perfil": renderProfile,
+  "#/dashboard": renderDashboard,
+  "#/onboarding/emails": () => renderOnboarding(0),
+  "#/onboarding/resumo": () => renderOnboarding(1),
+  "#/onboarding/sucesso": renderOnboardingSuccess,
+  "#/equipamentos/aceleradores": () => renderEquipamentos(0),
+  "#/equipamentos/braquiterapia": () => renderEquipamentos(1),
+  "#/equipamentos/capacidade-mensal": () => renderEquipamentos(2),
+  "#/equipamentos/turnos": () => renderEquipamentos(3),
+  "#/equipamentos/resumo": () => renderEquipamentos(4),
+  "#/equipamentos/sucesso": renderEquipamentosSuccess,
+  "#/pacientes": renderPacientes,
+  "#/pacientes/novo": renderNovoPaciente,
+  "#/pacientes/atualizar": renderAtualizarPacientes,
+  "#/encaminhamentos": renderEncaminhamentos,
+  "#/incentivos": renderIncentivos,
+  "#/painel-nacional": renderPainelNacional,
+  "#/notificacoes": renderNotificacoes,
+  "#/gestor/demanda": renderGestorDemanda,
+  "#/gestor/equipamentos": renderGestorEquipamentos,
+};
+
+function navigate(hash) {
+  window.location.hash = hash;
+  // Chama render() diretamente — o hashchange pode ser suprimido em iframes
+  setTimeout(render, 0);
+}
+
+function protectRoute(hash) {
+  if (!state.isAuthenticated && hash !== "#/login") { navigate("#/login"); return false; }
+  if (state.isAuthenticated && !state.profile && hash !== "#/perfil") { navigate("#/perfil"); return false; }
+  return true;
+}
+
+function render() {
+  const hash = window.location.hash || "#/login";
+  if (!protectRoute(hash)) return;
+  const page = routes[hash] || renderDashboard;
+  page();
+  updateHeader();
+  updateMenuActive(hash);
+  window.scrollTo(0, 0);
+}
+
+// ── Header ────────────────────────────────────────────────────
+function updateHeader() {
+  headerUserName.textContent = state.userName;
+  if (state.isAuthenticated) {
+    headerAuthBtn.classList.add("hidden");
+    headerAvatarBtn.classList.remove("hidden");
+    sessionBar.classList.remove("hidden");
+    loginArea.classList.add("hidden");
+
+    if (state.profile) {
+      // Perfil selecionado: layout completo com sidebar
+      appShell.classList.remove("hidden");
+      appShell.classList.remove("no-sidebar");
+      menuToggle.classList.remove("hidden");
+      sideMenu.classList.remove("hidden");
+      $("#notif-wrap").classList.remove("hidden");
+      updateSidebarNav();
+      updateNotifBadge();
+    } else {
+      // Autenticado sem perfil: layout centralizado, sem sidebar
+      appShell.classList.remove("hidden");
+      appShell.classList.add("no-sidebar");
+      sideMenu.classList.add("hidden");
+      menuToggle.classList.add("hidden");
+    }
+  } else {
+    headerAuthBtn.classList.remove("hidden");
+    headerAvatarBtn.classList.add("hidden");
+    menuToggle.classList.add("hidden");
+    sideMenu.classList.add("hidden");
+    appShell.classList.add("hidden");
+    appShell.classList.remove("no-sidebar");
+    loginArea.classList.remove("hidden");
+    sessionBar.classList.add("hidden");
+  }
+}
+
+function updateNotifBadge() {
+  const unread = state.notificacoes.filter(n => !n.lida).length;
+  const badge = $("#notif-count");
+  if (badge) { badge.textContent = unread; badge.style.display = unread ? "flex" : "none"; }
+}
+
+function updateSidebarNav() {
+  const nav = $("#main-nav");
+  if (!nav || !state.profile) return;
+  if (state.profile === "prestador") {
+    const onbOk = state.onboarding.completed;
+    const eqOk  = state.equipamentos.completed;
+    const unread = state.notificacoes.filter(n=>!n.lida).length;
+    const ativos = state.pacientes.filter(p=>p.status==="Em tratamento").length;
+    nav.innerHTML = `
+      <a href="javascript:void(0)" data-menu="dashboard"onclick="navigate('#/dashboard')">📈 Dashboard</a>
+
+      <div class="menu-divider"></div>
+      <p class="menu-label">Cadastro</p>
+      <a href="javascript:void(0)" data-menu="onboarding"onclick="navigate('#/onboarding/emails')">
+        🏥 Cadastro de Serviço
+        <span class="menu-status ${onbOk?'ok':'pending'}">${onbOk?'✓':'!'}</span>
+      </a>
+      <a href="javascript:void(0)" data-menu="equipamentos"onclick="navigate('#/equipamentos/aceleradores')">
+        ⚕ Equipamentos
+        <span class="menu-status ${eqOk?'ok':'pending'}">${eqOk?'✓':'!'}</span>
+      </a>
+
+      <div class="menu-divider"></div>
+      <p class="menu-label">Operação</p>
+      <a href="javascript:void(0)" data-menu="pacientes"onclick="navigate('#/pacientes')">
+        👥 Pacientes
+        ${ativos>0?`<span class="menu-badge">${ativos}</span>`:''}
+      </a>
+      <a href="javascript:void(0)" data-menu="atualizar"onclick="navigate('#/pacientes/atualizar')">↺ Atualização Semanal</a>
+      <a href="javascript:void(0)" data-menu="encaminhamentos"onclick="navigate('#/encaminhamentos')">↔ Encaminhamentos</a>
+
+      <div class="menu-divider"></div>
+      <p class="menu-label">Financeiro</p>
+      <a href="javascript:void(0)" data-menu="incentivos"onclick="navigate('#/incentivos')">💰 Incentivos Financeiros</a>
+
+      <div class="menu-divider"></div>
+      <p class="menu-label">Comunicações</p>
+      <a href="javascript:void(0)" data-menu="notificacoes"onclick="navigate('#/notificacoes')">
+        🔔 Notificações
+        ${unread>0?`<span class="menu-badge">${unread}</span>`:''}
+      </a>
+    `;
+  } else if (state.profile === "gestor-municipal") {
+    nav.innerHTML = `
+      <a href="javascript:void(0)" data-menu="dashboard"onclick="navigate('#/dashboard')"><span aria-hidden="true" style="font-style:normal">📈</span></i> Dashboard</a>
+      <div class="menu-divider"></div>
+      <a href="javascript:void(0)" data-menu="demanda"onclick="navigate('#/gestor/demanda')"><span aria-hidden="true" style="font-style:normal">≡</span></i> Registro de Demanda</a>
+      <a href="javascript:void(0)" data-menu="encaminhamentos"onclick="navigate('#/encaminhamentos')"><span aria-hidden="true" style="font-style:normal">↔</span></i> Encaminhamentos</a>
+      <a href="javascript:void(0)" data-menu="notificacoes"onclick="navigate('#/notificacoes')"><span aria-hidden="true" style="font-style:normal">🔔</span></i> Notificações</a>
+    `;
+  } else {
+    nav.innerHTML = `
+      <a href="javascript:void(0)" data-menu="dashboard"onclick="navigate('#/dashboard')"><span aria-hidden="true" style="font-style:normal">📈</span></i> Dashboard</a>
+      <div class="menu-divider"></div>
+      <a href="javascript:void(0)" data-menu="painel"onclick="navigate('#/painel-nacional')"><span aria-hidden="true" style="font-style:normal">🗺</span></i> Painel Nacional</a>
+      <a href="javascript:void(0)" data-menu="eq-federal"onclick="navigate('#/gestor/equipamentos')"><span aria-hidden="true" style="font-style:normal">⚕</span></i> Equipamentos</a>
+      <a href="javascript:void(0)" data-menu="encaminhamentos"onclick="navigate('#/encaminhamentos')"><span aria-hidden="true" style="font-style:normal">↔</span></i> Encaminhamentos</a>
+      <a href="javascript:void(0)" data-menu="incentivos"onclick="navigate('#/incentivos')"><span aria-hidden="true" style="font-style:normal">💰</span></i> Incentivos</a>
+      <a href="javascript:void(0)" data-menu="notificacoes"onclick="navigate('#/notificacoes')"><span aria-hidden="true" style="font-style:normal">🔔</span></i> Notificações <span class="menu-badge">3</span></a>
+    `;
+  }
+}
+
+function updateMenuActive(hash) {
+  $$("[data-menu]").forEach((el) => {
+    el.classList.remove("active");
+    const k = el.dataset.menu;
+    // Mapeamento explícito: data-menu → fragmentos de rota que ativam o item
+    const checks = {
+      dashboard:       h => h === "#/dashboard",
+      onboarding:      h => h.startsWith("#/onboarding"),
+      equipamentos:    h => h.startsWith("#/equipamentos"),
+      pacientes:       h => h === "#/pacientes" || h === "#/pacientes/novo",
+      atualizar:       h => h === "#/pacientes/atualizar",
+      encaminhamentos: h => h === "#/encaminhamentos",
+      incentivos:      h => h === "#/incentivos",
+      notificacoes:    h => h === "#/notificacoes",
+      demanda:         h => h === "#/gestor/demanda",
+      painel:          h => h === "#/painel-nacional",
+      "eq-federal":    h => h === "#/gestor/equipamentos",
+    };
+    if (checks[k] && checks[k](hash)) el.classList.add("active");
+  });
+}
+
+// ── Toast ─────────────────────────────────────────────────────
+function showToast(type, title, text, duration=4000) {
+  const icons = { success:"fa-circle-check", error:"fa-circle-xmark", info:"fa-circle-info", warning:"fa-triangle-exclamation" };
+  const t = document.createElement("div");
+  t.className = `toast ${type}`;
+  t.innerHTML = `${icon(icons[type]||icons.info,"font-size:18px;flex-shrink:0")}<div class="toast-body"><div class="toast-title">${title}</div><div class="toast-text">${text}</div></div><button class="toast-close"><span aria-hidden="true" style="font-style:normal">✕</span></i></button>`;
+  toastContainer.appendChild(t);
+  t.querySelector(".toast-close").addEventListener("click", () => dismissToast(t));
+  setTimeout(() => dismissToast(t), duration);
+}
+function dismissToast(t) { if (!t.parentNode) return; t.classList.add("closing"); setTimeout(() => t.remove(), 200); }
+
+// ── Modal ─────────────────────────────────────────────────────
+function showModal(title, message, actions) {
+  modalContainer.innerHTML = `<div class="modal-overlay" id="modal-overlay"><div class="modal"><div style="font-size:40px;color:var(--yellow-vivid-20);margin-bottom:var(--sp-4)"><span aria-hidden="true" style="font-style:normal">⚠</span></i></div><h3>${title}</h3><p>${message}</p><div class="modal-actions">${actions}</div></div></div>`;
+}
+function closeModal() { modalContainer.innerHTML = ""; }
+window.closeModal = closeModal;
+
+// ── Session ───────────────────────────────────────────────────
+let sessionInterval;
+function startSession() {
+  let seconds = state.sessionMinutes * 60;
+  clearInterval(sessionInterval);
+  sessionInterval = setInterval(() => {
+    if (!state.isAuthenticated) { clearInterval(sessionInterval); return; }
+    seconds--;
+    const m = String(Math.floor(seconds/60)).padStart(2,"0");
+    const s = String(seconds%60).padStart(2,"0");
+    sessionTimer.textContent = `${m}:${s}`;
+    if (seconds <= 0) { clearInterval(sessionInterval); showModal("Sessão expirada","Sua sessão expirou. Faça login novamente.",`<button class="btn primary" onclick="doLogout()">Fazer login</button>`); }
+  }, 1000);
+}
+function doLogout() { state.isAuthenticated = false; state.profile = null; clearInterval(sessionInterval); closeModal(); navigate("#/login"); }
+window.doLogout = doLogout;
+
+window.addEventListener("scroll", () => { const h = $("#app-header"); if (window.scrollY > 10) h.classList.add("scrolled"); else h.classList.remove("scrolled"); });
+
+// ══════════════════════════════════════════════════════════════
+//  LOGIN
+// ══════════════════════════════════════════════════════════════
+function renderLogin() {
+  appShell.classList.add("hidden");
+  loginArea.classList.remove("hidden");
+  loginArea.innerHTML = `
+    <div class="login-page">
+      <div class="login-banner">
+        <h1>Sistema Nacional de Monitoramento da<br/><span style="color:var(--yellow-vivid-20)">Radioterapia</span></h1>
+
+        <div style="margin-top:var(--sp-8);padding:var(--sp-4);background:rgba(255,255,255,.08);border-radius:var(--radius-md);border:1px solid rgba(255,255,255,.15);font-size:13px;color:rgba(220,232,255,.7)">
+          <span aria-hidden="true" style="font-style:normal;margin-right:8px">ℹ</span></i>Protótipo v4.0 — navegável para validação de requisitos. Nenhum dado real é processado.
+        </div>
+      </div>
+      <div class="login-form-area">
+        <div class="login-form-card">
+          <div class="logo-section">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:var(--sp-4)">
+              <div style="width:52px;height:52px;background:#071D41;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0" aria-hidden="true">
+                <svg viewBox="0 0 52 52" width="52" height="52" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="52" height="52" rx="12" fill="#071D41"/>
+                  <rect x="21" y="12" width="10" height="28" rx="2" fill="#168821"/>
+                  <rect x="12" y="21" width="28" height="10" rx="2" fill="#168821"/>
+                </svg>
+              </div>
+              <div>
+                <p style="font-size:11px;color:var(--gray-60);font-weight:600;text-transform:uppercase;letter-spacing:.06em">Ministério da Saúde</p>
+                <h2 style="font-size:24px;margin:0;color:var(--blue-warm-vivid-90);font-weight:900;letter-spacing:.04em">SIMRAD</h2>
+              </div>
+            </div>
+            <p style="color:var(--gray-60);font-size:13px">Acesso via conta gov.br com autenticação segura OAuth 2.0 / OpenID Connect.</p>
+          </div>
+          <button class="govbr-btn" id="login-btn">
+            <span class="govbr-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 1L11.09 6.26L17 7.27L13 11.14L13.99 17L9 14.27L4.01 17L5 11.14L1 7.27L6.91 6.26L9 1Z" fill="#1A1A1A" stroke="#1A1A1A" stroke-width="1" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            Entrar com <strong>gov.br</strong>
+          </button>
+          <div class="login-help">
+            <p><span aria-hidden="true" style="font-style:normal;color:var(--blue-warm-vivid-70)">❓</span></i> Primeiro acesso? Contate a gestão local do seu serviço.</p>
+            <p><span aria-hidden="true" style="font-style:normal;color:var(--blue-warm-vivid-70)">✉</span></i> Suporte: <a href="mailto:simrad@saude.gov.br">simrad@saude.gov.br</a></p>
+            <p style="margin-top:var(--sp-4)"><a href="#">Criar conta gov.br</a> &nbsp;•&nbsp; <a href="#">Ajuda</a> &nbsp;•&nbsp; <a href="#">Privacidade</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  $("#login-btn").addEventListener("click", () => {
+    const btn = $("#login-btn");
+    btn.innerHTML = `<span class="spinner-inline"></span> &nbsp; Autenticando via gov.br...`;
+    btn.disabled = true;
+    setTimeout(() => { state.isAuthenticated = true; startSession(); navigate("#/perfil"); showToast("success","Login realizado",`Bem-vindo, ${state.userName}!`); }, 1400);
+  });
+}
+
+// ══════════════════════════════════════════════════════════════
+//  PERFIL
+// ══════════════════════════════════════════════════════════════
+function renderProfile() {
+  content.innerHTML = `
+    <div style="padding:var(--sp-6) 0">
+      <div style="text-align:center;margin-bottom:var(--sp-6)">
+        <h3 style="margin-bottom:var(--sp-2);font-size:24px;color:var(--blue-warm-vivid-70)">Selecione seu perfil de acesso</h3>
+        <p style="color:var(--gray-60);font-size:15px">Bem-vindo, <strong>${state.userName}</strong>. Escolha como deseja operar no SIMRAD nesta sessão.</p>
+      </div>
+      <div class="grid-profiles">
+        ${profCard("prestador","fa-hospital","blue","Prestador","CACON / UNACON com radioterapia","Gerencie equipamentos, registre pacientes e acompanhe incentivos financeiros.")}
+        ${profCard("gestor-municipal","fa-building-columns","green","Gestor Municipal / Estadual","Secretaria de Saúde","Registre demanda territorial, valide encaminhamentos e monitore indicadores.")}
+        ${profCard("gestor-federal","fa-landmark","purple","Gestor Federal (SAES/MS)","Ministério da Saúde","Painel nacional consolidado, validação de equipamentos e configuração do sistema.")}
+      </div>
+    </div>
+  `;
+  $$(".profile-card").forEach((el) => {
+    el.addEventListener("click", () => {
+      state.profile = el.dataset.profile;
+      appShell.style.gridTemplateColumns = "";
+      navigate("#/dashboard");
+      const labels = { prestador:"Prestador", "gestor-municipal":"Gestor Municipal/Estadual", "gestor-federal":"Gestor Federal (SAES/MS)" };
+      showToast("info","Perfil ativado",`Você está operando como ${labels[state.profile]}.`);
+    });
+  });
+}
+
+function profCard(id, ico, color, title, subtitle, desc) {
+  return `<article class="profile-card" data-profile="${id}" role="button" tabindex="0">
+    <div class="profile-icon ${color}">${icon(ico)}</div>
+    <h4>${title}</h4>
+    <p style="font-size:13px;font-weight:600;color:var(--gray-80);margin-bottom:var(--sp-2)">${subtitle}</p>
+    <p style="font-size:12px;color:var(--gray-60);margin-bottom:var(--sp-4);min-height:40px">${desc}</p>
+    <button class="btn primary" style="width:100%">Acessar</button>
+  </article>`;
+}
+
+// ══════════════════════════════════════════════════════════════
+//  DASHBOARD
+// ══════════════════════════════════════════════════════════════
+function renderDashboard() {
+  const ativos = state.pacientes.filter(p => p.status === "Em tratamento").length;
+  const capSem = capSemanal();
+
+  const kpisMap = {
+    prestador: [
+      { icon:"fa-users", color:"blue", label:"Pacientes ativos", value:ativos, sub:"Semana atual", trend:"+2 vs semana anterior", tdir:"up" },
+      { icon:"fa-radiation", color:"green", label:"Equipamentos operacionais", value: state.equipamentos.aceleradores.filter(a=>a.status==="Operacional").length || 2, sub:"Aceleradores", trend:"Normal", tdir:"up" },
+      { icon:"fa-calendar-check", color:"yellow", label:"Vagas disponíveis", value: capSem || 14, sub:"Esta semana", trend:"-1 vs semana anterior", tdir:"down" },
+      { icon:"fa-coins", color:"blue", label:"Faixa de incentivo", value:"10%", sub:"Faixa 1 — Competência Apr/25", trend:"Meta: 20%", tdir:"up" },
+    ],
+    "gestor-municipal": [
+      { icon:"fa-users", color:"blue", label:"Pacientes aguardando", value:"23", sub:"Na fila regional" },
+      { icon:"fa-hospital", color:"green", label:"Vagas disponíveis", value:"11", sub:"Raio de 150 km" },
+      { icon:"fa-clock", color:"yellow", label:"Tempo médio de espera", value:"31", sub:"Dias" },
+      { icon:"fa-route", color:"blue", label:"Encaminhamentos ativos", value:"5", sub:"Em andamento" },
+    ],
+    "gestor-federal": [
+      { icon:"fa-hospital", color:"blue", label:"Prestadores ativos", value:"347", sub:"Em todo o Brasil", trend:"+12 este mês", tdir:"up" },
+      { icon:"fa-users", color:"green", label:"Pacientes em tratamento", value:"14.382", sub:"Nacional", trend:"+3.2%", tdir:"up" },
+      { icon:"fa-triangle-exclamation", color:"red", label:"Alertas pendentes", value:"9", sub:"Equipamentos e inadimplência", trend:"Requer atenção", tdir:"down" },
+      { icon:"fa-coins", color:"yellow", label:"Incentivos emitidos", value:"R$2,1M", sub:"Competência Mar/25", trend:"+18% vs fev.", tdir:"up" },
+    ],
+  };
+  const kpis = kpisMap[state.profile] || kpisMap.prestador;
+
+  let extraSection = "";
+
+  if (state.profile === "prestador") {
+    const todoOnb = !state.onboarding.completed;
+    const todoEq = !state.equipamentos.completed;
+    if (todoOnb || todoEq) {
+      extraSection = `
+        <div class="message warning">
+          <span aria-hidden="true" style="font-style:normal">⚠</span></i>
+          <div style="flex:1">
+            <strong>Configuração pendente.</strong> Complete os passos abaixo para ativar o cadastro do seu serviço no SIMRAD.
+            <div style="display:flex;gap:var(--sp-3);margin-top:var(--sp-3);flex-wrap:wrap">
+              <button class="btn sm ${todoOnb?'primary':'success-btn'}" id="cta-onb">
+                ${icon(todoOnb?"fa-arrow-right":"fa-check")} ${todoOnb?'Iniciar Onboarding CNES':'Onboarding concluído'}
+              </button>
+              <button class="btn sm ${todoEq?'secondary':'success-btn'} ${todoOnb?'disabled':''}" id="cta-eq" ${todoOnb?"disabled":""}>
+                ${icon(todoEq?"fa-radiation":"fa-check")} ${todoEq?'Cadastrar Equipamentos':'Equipamentos cadastrados'}
+              </button>
+            </div>
+          </div>
+        </div>`;
+    } else {
+      extraSection = `
+        <div class="message success">
+          <span aria-hidden="true" style="font-style:normal">✅</span></i>
+          <div><strong>Serviço ativo no SIMRAD.</strong> Todas as configurações estão concluídas. Mantenha os status dos pacientes atualizados semanalmente.</div>
+        </div>`;
+    }
+
+    extraSection += `
+      <div class="dash-grid">
+        <div class="page-card">
+          <div class="section-header"><h3>Pacientes ativos</h3><button class="btn sm secondary" onclick="navigate('#/pacientes')">Ver todos</button></div>
+          <table class="data-table">
+            <thead><tr><th>CPF (hash)</th><th>CID</th><th>Progresso</th><th>Status</th></tr></thead>
+            <tbody>
+              ${state.pacientes.slice(0,4).map(p => `
+                <tr>
+                  <td style="font-family:monospace">${p.cpf}</td>
+                  <td><span class="pill info">${p.cid}</span></td>
+                  <td>
+                    <div style="font-size:12px;color:var(--gray-60);margin-bottom:4px">${p.realizadas}/${p.fracoes} slots</div>
+                    <div class="progress-bar-wrap"><div class="progress-bar-fill ${p.status==='Concluído'?'green':'blue'}" style="width:${Math.round(p.realizadas/p.fracoes*100)}%"></div></div>
+                  </td>
+                  <td><span class="pill ${p.status==='Em tratamento'?'info':'success'}">${p.status}</span></td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+        <div class="page-card">
+          <div class="section-header"><h3>Projeção de vagas</h3></div>
+          <div class="semaforo-item"><span>Próximas 4 semanas</span><strong style="color:var(--blue-warm-vivid-70)">+6 vagas</strong></div>
+          <div class="semaforo-item"><span>Próximas 8 semanas</span><strong style="color:var(--blue-warm-vivid-70)">+11 vagas</strong></div>
+          <div class="semaforo-item"><span>Próximas 12 semanas</span><strong style="color:var(--blue-warm-vivid-70)">+17 vagas</strong></div>
+          <div style="margin-top:var(--sp-4);padding:var(--sp-3);background:var(--blue-warm-5);border-radius:var(--radius-sm);font-size:13px;color:var(--blue-warm-vivid-80)">
+            <span aria-hidden="true" style="font-style:normal">ℹ</span></i> &nbsp;Projeção calculada automaticamente com base nos ciclos ativos. Taxa de desconto: 10%.
+          </div>
+        </div>
+      </div>`;
+
+  } else if (state.profile === "gestor-municipal") {
+    extraSection = `
+      <div class="message info"><span aria-hidden="true" style="font-style:normal">ℹ</span></i>
+        <div><strong>Painel do Gestor Municipal/Estadual.</strong> Registre demanda da sua região e solicite encaminhamentos para serviços com vagas disponíveis.
+        <div style="margin-top:var(--sp-2)"><button class="btn sm primary" onclick="navigate('#/gestor/demanda')"><span aria-hidden="true" style="font-style:normal">+</span></i> Registrar demanda</button> &nbsp; <button class="btn sm secondary" onclick="navigate('#/encaminhamentos')"><span aria-hidden="true" style="font-style:normal">↔</span></i> Ver encaminhamentos</button></div>
+        </div>
+      </div>
+      <div class="dash-grid">
+        <div class="page-card">
+          <div class="section-header"><h3>Fila por tipo de tumor</h3></div>
+          ${[["C50 — Mama","8","vermelho"],["C61 — Próstata","6","amarelo"],["C53 — Colo do útero","5","amarelo"],["C34 — Pulmão","4","verde"]].map(([t,v,s])=>`
+            <div class="semaforo-item"><div style="display:flex;align-items:center;gap:8px"><div class="semaforo-dot ${s}"></div>${t}</div><strong>${v} pac.</strong></div>`).join("")}
+        </div>
+        <div class="page-card">
+          <div class="section-header"><h3>Serviços com vagas (raio 150 km)</h3></div>
+          ${[["Hospital Araújo Jorge – Goiânia","5 vagas","48 km"],["UNACON Anápolis","3 vagas","55 km"],["Complexo RT Caldas Novas","3 vagas","142 km"]].map(([n,v,d])=>`
+            <div class="semaforo-item"><div><div style="font-weight:600;font-size:13px">${n}</div><div style="font-size:11px;color:var(--gray-60)">${d}</div></div><span class="pill success">${v}</span></div>`).join("")}
+        </div>
+      </div>`;
+
+  } else {
+    extraSection = `
+      <div class="dash-grid">
+        <div class="page-card">
+          <div class="section-header"><h3>Saldo Oferta × Demanda</h3><button class="btn sm secondary" onclick="navigate('#/painel-nacional')">Ver painel</button></div>
+          ${[["Norte","Hipossuficiente","-42","vermelho"],["Nordeste","Hipossuficiente","-87","vermelho"],["Centro-Oeste","Equilíbrio","+3","amarelo"],["Sudeste","Hipersuficiente","+213","verde"],["Sul","Hipersuficiente","+54","verde"]].map(([r,s,v,c])=>`
+            <div class="semaforo-item"><div style="display:flex;align-items:center;gap:8px"><div class="semaforo-dot ${c}"></div><div><div style="font-weight:600;font-size:13px">${r}</div><div style="font-size:11px;color:var(--gray-60)">${s}</div></div></div><strong style="color:${c==='verde'?'var(--green-cool-vivid-50)':c==='amarelo'?'#7a5800':'var(--red-vivid-50)'}">${v}</strong></div>`).join("")}
+        </div>
+        <div class="page-card">
+          <div class="section-header"><h3>Alertas pendentes</h3></div>
+          ${[["warning","Prestador CACON-SP-003","4 semanas sem atualização — incentivo em risco"],["info","Equipamento aguardando validação","TrueBeam SN-2025-004 — UNACON Manaus, SLA 48h"],["danger","Encaminhamento expirado","Gestor MA não respondeu em 48h — vaga desbloqueada automaticamente"]].map(([t,ti,tx])=>`
+            <div class="message ${t==='warning'?'warning':t==='info'?'info':'danger'}" style="margin-bottom:8px;padding:10px 12px">${icon(t==="warning"?"fa-triangle-exclamation":t==="info"?"fa-circle-info":"fa-circle-xmark")}<div><strong style="font-size:13px">${ti}</strong><div style="font-size:12px">${tx}</div></div></div>`).join("")}
+        </div>
+      </div>`;
+  }
+
+  content.innerHTML = `
+    <section class="hero" style="position:relative">
+      ${state.profile === "prestador" ? `
+        <button onclick="showModal('Informes do Sistema','<div style=\\'display:flex;flex-direction:column;gap:12px\\'><div style=\\'background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:12px\\'><div style=\\'font-weight:700;font-size:13px;margin-bottom:4px\\'>📋 Portaria GM/MS nº 8.516/2025</div><div style=\\'font-size:12px;opacity:.85\\'>Novos critérios de faixas de incentivo entram em vigor na competência Maio/2025.</div></div><div style=\\'background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:12px\\'><div style=\\'font-weight:700;font-size:13px;margin-bottom:4px\\'>🔧 Manutenção programada</div><div style=\\'font-size:12px;opacity:.85\\'>Sistema ficará indisponível em 28/04 das 02h às 04h para atualização.</div></div><div style=\\'background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:12px\\'><div style=\\'font-weight:700;font-size:13px;margin-bottom:4px\\'>📊 Relatório mensal disponível</div><div style=\\'font-size:12px;opacity:.85\\'>O relatório de produção de Março/2025 já está disponível para download.</div></div></div>','<button class=\\'btn secondary\\' onclick=\\'closeModal()\\'>Fechar</button>')" style="position:absolute;top:var(--sp-5);right:var(--sp-5);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:var(--radius-full);width:40px;height:40px;display:grid;place-items:center;font-size:18px;cursor:pointer;transition:background .15s;z-index:2" title="Informes do sistema" onmouseover="this.style.background='rgba(255,255,255,.22)'" onmouseout="this.style.background='rgba(255,255,255,.12)'">
+          ✉️
+          <span style="position:absolute;top:6px;right:6px;width:9px;height:9px;background:#4ade80;border-radius:50%;border:1.5px solid #0C326F"></span>
+        </button>` : ""}
+      <h2>Dashboard — ${{ prestador:"Prestador", "gestor-municipal":"Gestor Municipal / Estadual", "gestor-federal":"Gestor Federal (SAES/MS)" }[state.profile]}</h2>
+      <p>Visão executiva de indicadores do SIMRAD para apoiar decisões sobre oferta e demanda de radioterapia no SUS.</p>
+      <div class="hero-meta">
+        <span class="hero-chip"><span aria-hidden="true" style="font-style:normal">📅</span></i> ${new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"2-digit",month:"long",year:"numeric"})}</span>
+        <span class="hero-chip"><span aria-hidden="true" style="font-style:normal;color:#4ade80;font-size:8px">●</span></i> Sistema operacional</span>
+        <span class="hero-chip"><span aria-hidden="true" style="font-style:normal">↺</span></i> Atualizado há 3 min</span>
+      </div>
+    </section>
+    <section class="kpis">
+      ${kpis.map(k=>`
+        <article class="kpi">
+           <div class="kpi-icon ${k.color}">${icon(k.icon)}</div>
+           <p class="label">${k.label}</p>
+           <p class="value">${k.value}</p>
+           <p class="sublabel">${k.sub}</p>
+           ${k.trend?`<span class="trend ${k.tdir||'up'}">${k.tdir==='up'?'▲':'▼'} ${k.trend}</span>`:""}
+        </article>`).join("")}
+    </section>
+    ${extraSection}
+  `;
+
+  const ctaOnb = $("#cta-onb");
+  if (ctaOnb && !state.onboarding.completed) ctaOnb.addEventListener("click", () => navigate("#/onboarding/emails"));
+  const ctaEq = $("#cta-eq");
+  if (ctaEq && state.onboarding.completed && !state.equipamentos.completed) ctaEq.addEventListener("click", () => navigate("#/equipamentos/aceleradores"));
+}
+
+// ══════════════════════════════════════════════════════════════
+//  ONBOARDING CNES (4 passos)
+// ══════════════════════════════════════════════════════════════
+function renderOnboarding(step) {
+  const steps = ["Contatos","Revisão"];
+  const nextRoute = ["#/onboarding/resumo","#/onboarding/sucesso"];
+  const prevRoute = ["#/dashboard","#/onboarding/emails"];
+  let body = "";
+
+  // Pré-preencher dados omitidos nas etapas removidas
+  if (!state.onboarding.cnes) {
+      state.onboarding.cnes="2077485";
+      state.onboarding.estabelecimento="Hospital Araújo Jorge";
+      state.onboarding.cnpj="00.469.860/0001-74";
+      state.onboarding.endereco="Av. 1, Qd. 544, Lt. A/D, s/n – Setor Leste Vila Nova";
+      state.onboarding.municipio="Goiânia";
+      state.onboarding.uf="GO";
+      state.onboarding.macro="Centro-Oeste";
+      state.onboarding.habilitacao="CACON com Radioterapia";
+  }
+
+  if (step === 0) {
+    body = `
+      <div style="display:flex; flex-direction:column; gap:var(--sp-4); margin-bottom:var(--sp-5)">
+        <div class="page-card" style="padding:var(--sp-4); box-shadow:none; border:1px solid var(--gray-20)">
+          <div style="display:flex; align-items:center; gap:var(--sp-2); margin-bottom:var(--sp-3)">
+            <span aria-hidden="true" style="font-style:normal; font-size:18px; color:var(--blue-warm-vivid-70)">🏥</span></i>
+            <h4 style="margin:0">Contatos da Instituição</h4>
+          </div>
+          <p style="font-size:13px; color:var(--gray-60); margin-bottom:var(--sp-4)">Contatos principais para comunicação administrativa com o serviço de saúde.</p>
+          <div class="field-grid">
+            <div class="field">
+              <label>Telefone Principal</label>
+              <div style="display:flex; gap:var(--sp-3); align-items:center; margin-top:4px">
+                <input type="text" id="onb-telefone" placeholder="(00) 00000-0000" style="max-width:200px;" value="${state.onboarding.telefone}" />
+                <label style="display:flex;align-items:center;gap:var(--sp-2);cursor:pointer;margin:0;font-weight:normal;font-size:13px">
+                  <input type="checkbox" id="onb-whatsapp" style="width:16px;height:16px;accent-color:var(--blue-warm-vivid-70)" ${state.onboarding.whatsapp?'checked':''} /> WhatsApp
+                </label>
+              </div>
+            </div>
+            <div class="field">
+              <label>E-mail institucional da Direção</label>
+              <input type="email" id="onb-email-direcao" placeholder="direcao@hospital.com.br" value="${state.onboarding.emailDirecao||''}" />
+            </div>
+          </div>
+        </div>
+
+        <div class="page-card" style="padding:var(--sp-4); box-shadow:none; border:1px solid var(--gray-20)">
+          <div style="display:flex; align-items:center; gap:var(--sp-2); margin-bottom:var(--sp-3)">
+            <span aria-hidden="true" style="font-style:normal; font-size:18px; color:var(--blue-warm-vivid-70)">👨‍⚕️</span></i>
+            <h4 style="margin:0">Responsáveis Técnicos</h4>
+          </div>
+          <p style="font-size:13px; color:var(--gray-60); margin-bottom:var(--sp-4)">Contatos obrigatórios segundo normas da CNEN e do MS.</p>
+          <div class="field-grid">
+            <div class="field">
+              <label>E-mail Responsável Técnico (RT)</label>
+              <input type="email" id="onb-email-rt" placeholder="rt@hospital.com.br" value="${state.onboarding.emailRT||''}" />
+            </div>
+            <div class="field">
+              <label>E-mail Supervisor de Radioterapia</label>
+              <input type="email" id="onb-email-supervisor" placeholder="supervisor@hospital.com.br" value="${state.onboarding.emailSupervisor||''}" />
+            </div>
+          </div>
+        </div>
+
+        <div class="page-card" style="padding:var(--sp-4); box-shadow:none; border:1px solid var(--gray-20)">
+          <div style="display:flex; align-items:center; gap:var(--sp-2); margin-bottom:var(--sp-3)">
+            <span aria-hidden="true" style="font-style:normal; font-size:18px; color:var(--blue-warm-vivid-70)">📬</span></i>
+            <h4 style="margin:0">Equipe Operacional / Notificações</h4>
+          </div>
+          <p style="font-size:13px; color:var(--gray-60); margin-bottom:var(--sp-4)">Adicione gestores de fila, faturamento ou outros membros que devem receber alertas do SIMRAD.</p>
+          <div id="emails-wrap" class="repeat-list"></div>
+          <button class="btn sm secondary" id="add-email"><span aria-hidden="true" style="font-style:normal">+</span></i> Outro e-mail</button>
+        </div>
+      </div>
+
+      <div class="message info" style="margin-top:var(--sp-4)"><span aria-hidden="true" style="font-style:normal">ℹ</span></i><div>Lembretes semanais são enviados toda segunda-feira às 08h. Alertas de suspensão de incentivo são sempre enviados por e-mail.</div></div>`;
+  }
+
+  if (step === 1) {
+
+
+
+
+    body = `
+      <h4>Revisão final dos dados</h4>
+      <p style="color:var(--gray-60);margin-bottom:var(--sp-4)">Confira as informações antes de confirmar o cadastro.</p>
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="kpi-icon blue" style="width:36px;height:36px;font-size:16px"><span aria-hidden="true" style="font-style:normal">🏥</span></i></div>
+          <h4>Estabelecimento</h4>
+          ${sr("CNES", state.onboarding.cnes||"—")}
+          ${sr("Nome", state.onboarding.estabelecimento||"—")}
+          ${sr("CNPJ", state.onboarding.cnpj||"—")}
+          ${sr("Endereço", state.onboarding.endereco||"—")}
+          ${sr("Município/UF", `${state.onboarding.municipio||"—"} / ${state.onboarding.uf||"—"}`)}
+          ${sr("Macrorregião", state.onboarding.macro||"—")}
+        </div>
+        <div class="summary-card">
+          <div class="kpi-icon green" style="width:36px;height:36px;font-size:16px"><span aria-hidden="true" style="font-style:normal">📋</span></i></div>
+          <h4>Configuração</h4>
+          ${sr("Habilitação", state.onboarding.habilitacao||"—")}
+          ${sr("Telefone", state.onboarding.telefone ? state.onboarding.telefone + (state.onboarding.whatsapp ? " (WhatsApp)" : "") : "—")}
+          ${sr("E-mail Direção", state.onboarding.emailDirecao||"—")}
+          ${sr("E-mail RT", state.onboarding.emailRT||"—")}
+          ${sr("E-mail Supervisor", state.onboarding.emailSupervisor||"—")}
+          ${sr("Equipe (E-mails)", state.onboarding.emails.filter(e=>(typeof e==='object'?e.email:e)).map(e=>typeof e==='object'?`${e.cargo}: ${e.email}`:e).join("<br/>")||"—")}
+          <div style="margin-top:var(--sp-3)"><span class="pill success"><span aria-hidden="true" style="font-style:normal">✓</span></i> Dados conferidos</span></div>
+          <div class="message info" style="margin-top:var(--sp-3);font-size:12px"><span aria-hidden="true" style="font-style:normal">ℹ</span></i><div>O cadastro será validado pelo Ministério da Saúde antes da ativação. SLA: 48h.</div></div>
+        </div>
+      </div>`;
+  }
+
+  content.innerHTML = `
+    <section class="wizard">
+      <div class="wizard-header">
+        <h3><span aria-hidden="true" style="font-style:normal;color:var(--blue-warm-vivid-70)">🏥</span></i> &nbsp;Cadastro de Serviço</h3>
+        <p>Configure o cadastro do seu estabelecimento no SIMRAD — passo ${step+1} de ${steps.length}</p>
+      </div>
+      <div class="wizard-steps">
+        ${steps.map((l,i)=>`
+          <div class="step ${i<step?'done':''} ${i===step?'active':''}">
+            <span class="step-indicator">${i<step?'<span aria-hidden="true" style="font-style:normal;font-size:14px">✓</span></i>':i+1}</span>
+            <span class="step-label">${l}</span>
+          </div>`).join("")}
+      </div>
+      <div class="wizard-body">${body}</div>
+      <div class="wizard-nav">
+        <button class="btn tertiary" id="cancel">Cancelar</button>
+        <div class="right">
+          <button class="btn secondary" id="prev" ${step===0?"disabled":""}><span aria-hidden="true" style="font-style:normal">←</span></i> Voltar</button>
+          <button class="btn primary" id="next">${step===1?'<span aria-hidden="true" style="font-style:normal">✓</span></i> Confirmar cadastro':'Avançar <span aria-hidden="true" style="font-style:normal">→</span></i>'}</button>
+        </div>
+      </div>
+    </section>`;
+
+  $("#cancel").addEventListener("click",()=>navigate("#/dashboard"));
+  $("#prev").addEventListener("click",()=>navigate(prevRoute[step]));
+
+  if (step===0) {
+    setupEmailsStep();
+    $("#next").addEventListener("click",()=>navigate(nextRoute[step]));
+  }
+  if (step===1) {
+    $("#next").addEventListener("click",()=>{
+      state.onboarding.completed = true;
+      updateSidebarNav();
+      navigate("#/onboarding/sucesso");
+      showToast("success","Onboarding concluído","Seu cadastro foi enviado para validação do MS.");
+    });
+  }
+}
+
+
+
+function setupEmailsStep() {
+  if (!state.onboarding.emails.length) state.onboarding.emails=[""];
+  const wrap=$("#emails-wrap");
+  const redraw=()=>{
+    wrap.innerHTML=state.onboarding.emails.map((em,i)=>`
+      <div class="repeat-item" style="padding:var(--sp-3)">
+        <div class="item-header"><span class="item-number">E-mail #${i+1}</span>${state.onboarding.emails.length>1?`<button class="btn-remove" data-idx="${i}"><span aria-hidden="true" style="font-style:normal">🗑</span></i></button>`:""}</div>
+        <div class="field"><input type="email" id="em-${i}" value="${em}" placeholder="exemplo@hospital.gov.br" /></div>
+      </div>`).join("");
+    state.onboarding.emails.forEach((_,i)=>{$(`#em-${i}`).addEventListener("input",ev=>state.onboarding.emails[i]=ev.target.value);});
+    wrap.querySelectorAll(".btn-remove").forEach(btn=>btn.addEventListener("click",()=>{state.onboarding.emails.splice(Number(btn.dataset.idx),1);redraw();}));
+  };
+  redraw();
+  $("#add-email").addEventListener("click",()=>{
+    if (state.onboarding.emails.length>=3){showToast("info","Máximo atingido","São permitidos até 3 endereços.");return;}
+    state.onboarding.emails.push("");redraw();
+  });
+  
+  $("#onb-telefone").addEventListener("input", ev => state.onboarding.telefone = ev.target.value);
+  $("#onb-whatsapp").addEventListener("change", ev => state.onboarding.whatsapp = ev.target.checked);
+  $("#onb-email-direcao")?.addEventListener("input", ev => state.onboarding.emailDirecao = ev.target.value);
+  $("#onb-email-rt")?.addEventListener("input", ev => state.onboarding.emailRT = ev.target.value);
+  $("#onb-email-supervisor")?.addEventListener("input", ev => state.onboarding.emailSupervisor = ev.target.value);
+
+  $("#next").addEventListener("click",()=>navigate("#/onboarding/resumo"));
+}
+
+function renderOnboardingSuccess() {
+  state.onboarding.completed = true;
+  content.innerHTML = `
+    <section class="page-card success-screen">
+      <div class="success-icon"><span aria-hidden="true" style="font-style:normal">✅</span></i></div>
+      <h2>Onboarding concluído com sucesso!</h2>
+      <p>O cadastro do seu estabelecimento foi enviado e está aguardando validação pela equipe do Ministério da Saúde (SAES).</p>
+      <div style="margin:var(--sp-5) auto"><span class="pill warning" style="font-size:14px;padding:var(--sp-2) var(--sp-5)"><span aria-hidden="true" style="font-style:normal">⏳</span></i> Aguardando validação do MS — SLA 48h</span></div>
+      <div class="message info" style="max-width:600px;margin:var(--sp-4) auto;text-align:left"><span aria-hidden="true" style="font-style:normal">ℹ</span></i>
+        <div><strong>Próximos passos</strong><br/>1. Você receberá uma notificação por e-mail ao concluir a validação.<br/>2. Após aprovação, cadastre seus equipamentos para ativar o cálculo de vagas.<br/>3. Inicie o registro de pacientes para habilitar os incentivos financeiros.</div>
+      </div>
+      <div class="actions">
+        <button class="btn primary lg" onclick="navigate('#/equipamentos/aceleradores')"><span aria-hidden="true" style="font-style:normal">⚕</span></i> Cadastrar Equipamentos</button>
+        <button class="btn secondary" onclick="navigate('#/dashboard')"><span aria-hidden="true" style="font-style:normal">📈</span></i> Ir ao Dashboard</button>
+      </div>
+    </section>`;
+}
+
+// ══════════════════════════════════════════════════════════════
+//  EQUIPAMENTOS (4 passos)
+// ══════════════════════════════════════════════════════════════
+function capSemanal() {
+  const t=state.equipamentos.turnos;
+  return (t.diurno+t.vespertino+t.noturno)*5+t.fimSemana*2;
+}
+function capMensal(){ return Math.round(capSemanal()*4.33); }
+
+function renderEquipamentos(step) {
+  const steps=["Aceleradores","Braquiterapia","Capacidade de Tratamento por Mês","Perfil de atendimento do prestador","Revisão"];
+  const nextRoute=["#/equipamentos/braquiterapia","#/equipamentos/capacidade-mensal","#/equipamentos/turnos","#/equipamentos/resumo","#/equipamentos/sucesso"];
+  const prevRoute=["#/onboarding/resumo","#/equipamentos/aceleradores","#/equipamentos/braquiterapia","#/equipamentos/capacidade-mensal","#/equipamentos/turnos"];
+  let body="";
+
+  if (step===0) {
+    body=`
+      <h4>Equipamentos de Teleterapia</h4>
+      <p style="color:var(--gray-60);margin-bottom:var(--sp-4)">Informe os equipamentos de teleterapia (Aceleradores Lineares ou Cobaltoterapia) em operação no seu serviço.</p>
+      <div id="aceleradores-wrap" class="repeat-list"></div>
+      <button class="btn secondary" id="add-acelerador"><span aria-hidden="true" style="font-style:normal">+</span></i> Adicionar equipamento</button>
+      <div class="message warning" style="margin-top:var(--sp-4)"><span aria-hidden="true" style="font-style:normal">⚠</span></i><div>Qualquer alteração na capacidade instalada (novo equipamento, manutenção, desativação) requer validação prévia do MS — SLA 24h urgente, 48h programado.</div></div>`;
+  }
+
+  if (step===1) {
+    body=`
+      <h4>Equipamentos de braquiterapia</h4>
+      <p style="color:var(--gray-60);margin-bottom:var(--sp-4)">Informe se o serviço possui equipamentos de braquiterapia. Eles são geridos separadamente dos aceleradores.</p>
+      <div class="field" style="margin-bottom:var(--sp-4)">
+        <label style="display:flex;align-items:center;gap:var(--sp-2);cursor:pointer">
+          <input type="checkbox" id="has-braq" style="width:18px;height:18px;accent-color:var(--blue-warm-vivid-70)" /> Possuo equipamento(s) de braquiterapia em operação
+        </label>
+      </div>
+      <div id="braquiterapia-wrap" class="repeat-list"></div>
+      <button class="btn secondary hidden" id="add-braq"><span aria-hidden="true" style="font-style:normal">+</span></i> Adicionar equipamento</button>`;
+  }
+
+  if (step===2) {
+    body=`
+      <h4>Capacidade de Tratamento por Mês</h4>
+      <p style="color:var(--gray-60);margin-bottom:var(--sp-4)">Defina a estimativa de vagas mensais por paciente considerando o tempo integral do ciclo de tratamento. <br/><strong>Atenção: É o quantitativo total de vagas que a instituição disponibiliza, independente do número de equipamentos.</strong></p>
+      <div class="field-row">
+        <div class="field"><label>Vagas SUS estimadas por mês</label><input type="number" id="vagas-mensais" value="${state.equipamentos.vagasMensais||0}" min="0"/></div>
+      </div>
+      <div class="field" style="margin-top:var(--sp-4)">
+        <label style="display:flex;align-items:center;gap:var(--sp-2);cursor:pointer;font-weight:normal;">
+          <input type="checkbox" id="atende-privado" style="width:18px;height:18px;accent-color:var(--blue-warm-vivid-70)" ${state.equipamentos.atendePrivado?'checked':''} /> Atende privado?
+        </label>
+      </div>
+      <div class="field-row ${state.equipamentos.atendePrivado?'':'hidden'}" id="vagas-privado-wrap" style="margin-top:var(--sp-4)">
+        <div class="field"><label>Vagas privadas estimadas por mês*</label><input type="number" id="vagas-privado" value="${state.equipamentos.vagasPrivadas||0}" min="0"/><small>*Não contabilizadas para incentivo.</small></div>
+      </div>`;
+  }
+
+  if (step===3) {
+    const t=state.equipamentos.turnos;
+    body=`
+      <h4>Perfil de atendimento do prestador</h4>
+      <p style="color:var(--gray-60);margin-bottom:var(--sp-4)">Informe quantos slots seu serviço oferece por turno de atendimento e os respectivos horários.</p>
+      <div class="field-grid" style="margin-bottom:var(--sp-5)">
+        ${turnoField("diurno","Diurno (até 18h)","fa-sun",false,t.diurno)}
+        ${turnoField("noturno","Noturno (acima das 18h)","fa-moon",true,t.noturno)}
+        ${turnoField("fimSemana","Sábado","fa-calendar-day",true,t.fimSemana)}
+      </div>
+      <div class="capacity-card">
+        <h4>Capacidade estimada</h4>
+        <div class="capacity-row"><span class="cap-label">Slots por semana</span><span class="cap-value" id="cap-semana">${capSemanal()}</span></div>
+        <div class="capacity-divider"></div>
+        <div class="capacity-row"><span class="cap-label">Slots por mês (estimado)</span><span class="cap-value" id="cap-mes">${capMensal()}</span></div>
+      </div>`;
+  }
+
+  if (step===4) {
+    const ac=state.equipamentos.aceleradores;
+    const t=state.equipamentos.turnos;
+    body=`
+      <h4>Revisão do cadastro de equipamentos</h4>
+      <p style="color:var(--gray-60);margin-bottom:var(--sp-4)">Confira os dados antes de submeter para validação do Ministério da Saúde.</p>
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="kpi-icon blue" style="width:36px;height:36px;font-size:16px"><span aria-hidden="true" style="font-style:normal">⚕</span></i></div>
+          <h4>Teleterapia (${ac.length})</h4>
+          ${ac.length?ac.map((a,i)=>`${sr(`#${i+1} ${a.tipo||'Acelerador'}`,`${a.fabricante||'—'} ${a.modelo||'—'} (${a.status||'—'})`)}`).join(""):sr("","Nenhum cadastrado")}
+          ${sr("Braquiterapia",state.equipamentos.braquiterapia.length?`${state.equipamentos.braquiterapia.length} equipamento(s)`:"Nenhum")}
+        </div>
+        <div class="summary-card">
+          <div class="kpi-icon green" style="width:36px;height:36px;font-size:16px"><span aria-hidden="true" style="font-style:normal">📅</span></i></div>
+          <h4>Capacidade</h4>
+          ${sr("Diurno",`${t.diurno} slots/dia`)}
+          ${sr("Noturno",`${t.noturno} slots/dia`)}
+          ${sr("Sábado",`${t.fimSemana} slots/dia`)}
+          ${sr("Capacidade semanal",`${capSemanal()} slots`)}
+          ${sr("Vagas SUS estimadas por mês",`${state.equipamentos.vagasMensais||capMensal()} vagas`)}
+          ${state.equipamentos.atendePrivado?sr("Vagas privadas estimadas",`${state.equipamentos.vagasPrivadas||0} vagas`):""}
+        </div>
+      </div>`;
+  }
+
+  content.innerHTML=`
+    <section class="wizard">
+      <div class="wizard-header">
+        <h3><span aria-hidden="true" style="font-style:normal;color:var(--blue-warm-vivid-70)">⚕</span></i> &nbsp;Cadastro de Equipamentos</h3>
+        <p>Registre a estrutura instalada do serviço — passo ${step+1} de ${steps.length}</p>
+      </div>
+      <div class="wizard-steps">
+        ${steps.map((l,i)=>`
+          <div class="step ${i<step?'done':''} ${i===step?'active':''}">
+            <span class="step-indicator">${i<step?'<span aria-hidden="true" style="font-style:normal;font-size:14px">✓</span></i>':i+1}</span>
+            <span class="step-label">${l}</span>
+          </div>`).join("")}
+      </div>
+      <div class="wizard-body">${body}</div>
+      <div class="wizard-nav">
+        <button class="btn tertiary" id="cancel">Cancelar</button>
+        <div class="right">
+          <button class="btn secondary" id="prev" ${step===0?"disabled":""}><span aria-hidden="true" style="font-style:normal">←</span></i> Voltar</button>
+          <button class="btn primary" id="next">${step===4?'<span aria-hidden="true" style="font-style:normal">✈</span></i> Submeter para validação':'Avançar <span aria-hidden="true" style="font-style:normal">→</span></i>'}</button>
+        </div>
+      </div>
+    </section>`;
+
+  $("#cancel").addEventListener("click",()=>navigate("#/dashboard"));
+  $("#prev").addEventListener("click",()=>navigate(prevRoute[step]));
+  if (step===0){
+    setupAceleradores();
+    $("#next").addEventListener("click",()=>{
+      if(!state.equipamentos.aceleradores.length){
+        showToast("error","Acelerador obrigatório","Cadastre ao menos um acelerador antes de avançar.");return;
+      }
+      const temSerie = state.equipamentos.aceleradores.every(a=>a.serie.trim());
+      if(!temSerie){showToast("warning","Número de série","Informe o número de série de todos os aceleradores.");return;}
+      navigate(nextRoute[0]);
+    });
+  }
+  if (step===1){setupBraquiterapia(); $("#next").addEventListener("click",()=>navigate(nextRoute[1]));}
+  if (step===2){
+    $("#vagas-mensais").addEventListener("input", e => state.equipamentos.vagasMensais = Number(e.target.value));
+    $("#atende-privado").addEventListener("change", e => {
+      state.equipamentos.atendePrivado = e.target.checked;
+      if (e.target.checked) $("#vagas-privado-wrap").classList.remove("hidden");
+      else { $("#vagas-privado-wrap").classList.add("hidden"); state.equipamentos.vagasPrivadas = 0; $("#vagas-privado") ? $("#vagas-privado").value = 0 : null; }
+    });
+    $("#vagas-privado")?.addEventListener("input", e => state.equipamentos.vagasPrivadas = Number(e.target.value));
+    $("#next").addEventListener("click",()=>navigate(nextRoute[2]));
+  }
+  if (step===3){setupTurnos(); $("#next").addEventListener("click",()=>navigate(nextRoute[3]));}
+  if (step===4){
+    $("#next").addEventListener("click",()=>{
+      state.equipamentos.completed=true;
+      updateSidebarNav();
+      navigate("#/equipamentos/sucesso");
+      showToast("success","Cadastro enviado","Aguardando validação do MS.");
+    });
+  }
+}
+
+function turnoField(key,label,ico,incentivo,value){
+  const t = state.equipamentos.turnos[key + 'Hora'] || "";
+  return `<div class="field" style="margin-bottom:var(--sp-2)"><label>${icon(ico,"color:var(--blue-warm-vivid-70)")} ${label}</label>
+  <div style="display:flex;gap:var(--sp-2)">
+    <input type="number" min="0" max="100" id="turno-${key}" value="${value}" placeholder="slots" style="width:50%" />
+    <input type="text" id="turno-h-${key}" value="${t}" placeholder="Ex: 08:00-12:00" style="width:50%; font-size:12px;" />
+  </div></div>`;
+}
+
+function setupAceleradores(){
+  const wrap=$("#aceleradores-wrap");
+  if (!state.equipamentos.aceleradores.length) state.equipamentos.aceleradores.push({tipo:"Acelerador Linear",serie:"",fabricante:"Varian",modelo:"TrueBeam",ano:"",anoFuncionamento:"",status:"Operacional",modoAquisicao:"Próprio",upgrade:false,casaVazia:false,descomissao:"",taxaDose:""});
+  const tipos = ["Acelerador Linear","Cobaltoterapia"];
+  const fabs = ["Varian","Elekta","Siemens","Accuray","Brainlab"];
+  const mods = ["TrueBeam","Infinity","Versa HD","Halcyon","VitalBeam","Radixact","Outro"];
+  const modos = ["Próprio","Persus I","Pronon","Convênios — Programa","Convênios — Emenda","FAF","TED"];
+  const redraw=()=>{
+    wrap.innerHTML=state.equipamentos.aceleradores.map((a,i)=>`
+      <div class="repeat-item">
+        <div class="item-header"><span class="item-number">Equipamento #${i+1}</span>${state.equipamentos.aceleradores.length>1?`<button class="btn-remove" data-idx="${i}"><span aria-hidden="true" style="font-style:normal">🗑</span></i></button>`:""}</div>
+        <div class="field-grid">
+          <div class="field"><label>Tipo de equipamento</label><select id="tipo-${i}">${tipos.map(t=>`<option value="${t}" ${a.tipo===t?"selected":""}>${t}</option>`).join("")}</select></div>
+          <div class="field"><label>Nº de série</label><input id="serie-${i}" value="${a.serie}" placeholder="SN-2024-001" /></div>
+          <div class="field"><label>Fabricante</label><select id="fab-${i}">${fabs.map(f=>`<option value="${f}" ${a.fabricante===f?"selected":""}>${f}</option>`).join("")}</select></div>
+          <div class="field"><label>Modelo</label><select id="modelo-${i}">${mods.map(m=>`<option value="${m}" ${a.modelo===m?"selected":""}>${m}</option>`).join("")}</select></div>
+          <div class="field"><label>Ano de fabricação</label><input id="ano-${i}" type="number" value="${a.ano}" placeholder="2020" /></div>
+          ${a.tipo !== "Cobaltoterapia" ? `<div class="field"><label>Ano início de funcionamento</label><input id="anofunc-${i}" type="number" value="${a.anoFuncionamento||''}" placeholder="2021" /></div>` : ''}
+          <div class="field"><label>Modo de Aquisição</label><select id="modo-${i}">${modos.map(m=>`<option value="${m}" ${a.modoAquisicao===m?"selected":""}>${m}</option>`).join("")}</select></div>
+          <div class="field"><label>Status</label><select id="status-${i}">${["Operacional","Em manutenção","Em comissionamento","Desativado"].map(o=>`<option value="${o}" ${a.status===o?"selected":""}>${o}</option>`).join("")}</select></div>
+          ${a.tipo === "Cobaltoterapia" ? `
+          <div class="field"><label>Descomissionamento (Mês/Ano)</label><input id="descomiss-${i}" value="${a.descomissao||''}" placeholder="MM/AAAA" /></div>
+          <div class="field"><label>Taxa de Dose</label><input type="number" id="taxadose-${i}" value="${a.taxaDose||''}" placeholder="Ex: 100" /></div>
+          ` : ''}
+        </div>
+        ${a.tipo !== "Cobaltoterapia" ? `
+        <div style="display:flex;gap:var(--sp-8);margin-top:var(--sp-3)">
+          <label style="display:flex;align-items:center;gap:var(--sp-2);cursor:pointer;font-weight:normal;font-size:14px;">
+            <input type="checkbox" id="upgrade-${i}" style="width:18px;height:18px;accent-color:var(--blue-warm-vivid-70)" ${a.upgrade?'checked':''} /> Possui upgrade?
+          </label>
+          <label style="display:flex;align-items:center;gap:var(--sp-2);cursor:pointer;font-weight:normal;font-size:14px;">
+            <input type="checkbox" id="casavazia-${i}" style="width:18px;height:18px;accent-color:var(--blue-warm-vivid-70)" ${a.casaVazia?'checked':''} /> Possui Casamata Vazia
+          </label>
+        </div>` : ''}
+      </div>`).join("");
+    state.equipamentos.aceleradores.forEach((_,i)=>{
+      $(`#tipo-${i}`).addEventListener("change",ev=>{state.equipamentos.aceleradores[i].tipo=ev.target.value; redraw();});
+      $(`#serie-${i}`).addEventListener("input",ev=>state.equipamentos.aceleradores[i].serie=ev.target.value);
+      $(`#fab-${i}`).addEventListener("change",ev=>state.equipamentos.aceleradores[i].fabricante=ev.target.value);
+      $(`#modelo-${i}`).addEventListener("change",ev=>state.equipamentos.aceleradores[i].modelo=ev.target.value);
+      $(`#ano-${i}`).addEventListener("input",ev=>state.equipamentos.aceleradores[i].ano=ev.target.value);
+      $(`#anofunc-${i}`)?.addEventListener("input",ev=>state.equipamentos.aceleradores[i].anoFuncionamento=ev.target.value);
+      $(`#modo-${i}`).addEventListener("change",ev=>state.equipamentos.aceleradores[i].modoAquisicao=ev.target.value);
+      $(`#status-${i}`).addEventListener("change",ev=>state.equipamentos.aceleradores[i].status=ev.target.value);
+      $(`#upgrade-${i}`)?.addEventListener("change",ev=>{ state.equipamentos.aceleradores[i].upgrade=ev.target.checked; });
+      $(`#casavazia-${i}`)?.addEventListener("change",ev=>{ state.equipamentos.aceleradores[i].casaVazia=ev.target.checked; });
+      $(`#descomiss-${i}`)?.addEventListener("input",ev=>state.equipamentos.aceleradores[i].descomissao=ev.target.value);
+      $(`#taxadose-${i}`)?.addEventListener("input",ev=>state.equipamentos.aceleradores[i].taxaDose=ev.target.value);
+    });
+    wrap.querySelectorAll(".btn-remove").forEach(btn=>btn.addEventListener("click",()=>{state.equipamentos.aceleradores.splice(Number(btn.dataset.idx),1);redraw();}));
+  };
+  redraw();
+  $("#add-acelerador").addEventListener("click",()=>{state.equipamentos.aceleradores.push({tipo:"Acelerador Linear",serie:"",fabricante:"Varian",modelo:"TrueBeam",ano:"",anoFuncionamento:"",status:"Operacional",modoAquisicao:"Próprio",upgrade:false,casaVazia:false,descomissao:"",taxaDose:""});redraw();showToast("info","Equipamento adicionado",`Total: ${state.equipamentos.aceleradores.length}`);});
+}
+
+function setupBraquiterapia(){
+  const has=$("#has-braq"), wrap=$("#braquiterapia-wrap"), addBtn=$("#add-braq");
+  const fabs = ["Varian","Elekta","Eckert & Ziegler","Bebig"];
+  const mods = ["GammaMedplus","Flexitron","SagiNova"];
+  const modos = ["Próprio","Persus I","Pronon","Convênios","FAF","TED"];
+
+  const redraw=()=>{
+    if(!has.checked){wrap.innerHTML=`<p style="color:var(--gray-60);font-size:13px">Nenhum equipamento de braquiterapia.</p>`;state.equipamentos.braquiterapia=[];addBtn.classList.add("hidden");return;}
+    addBtn.classList.remove("hidden");
+    if(!state.equipamentos.braquiterapia.length) state.equipamentos.braquiterapia.push({serie:"",fabricante:"Varian",modelo:"GammaMedplus",ano:"",status:"Operacional",modoAquisicao:"Próprio",vagasMes:0});
+    wrap.innerHTML=state.equipamentos.braquiterapia.map((b,i)=>`
+      <div class="repeat-item">
+        <div class="item-header"><span class="item-number">Braquiterapia #${i+1}</span>${state.equipamentos.braquiterapia.length>1?`<button class="btn-remove" data-idx="${i}"><span aria-hidden="true" style="font-style:normal">🗑</span></i></button>`:""}</div>
+        <div class="field-grid">
+          <div class="field"><label>Nº de série</label><input id="bserie-${i}" value="${b.serie}" placeholder="BQ-2024-001" /></div>
+          <div class="field"><label>Fabricante</label><select id="bfab-${i}">${fabs.map(f=>`<option value="${f}" ${b.fabricante===f?"selected":""}>${f}</option>`).join("")}</select></div>
+          <div class="field"><label>Modelo</label><select id="bmodelo-${i}">${mods.map(m=>`<option value="${m}" ${b.modelo===m?"selected":""}>${m}</option>`).join("")}</select></div>
+          <div class="field"><label>Ano de fabricação</label><input id="bano-${i}" type="number" value="${b.ano}" placeholder="2020" /></div>
+          <div class="field"><label>Modo de Aquisição</label><select id="bmodo-${i}">${modos.map(m=>`<option value="${m}" ${b.modoAquisicao===m?"selected":""}>${m}</option>`).join("")}</select></div>
+          <div class="field"><label>Status</label><select id="bstatus-${i}">${["Operacional","Em manutenção"].map(o=>`<option value="${o}" ${b.status===o?"selected":""}>${o}</option>`).join("")}</select></div>
+          <div class="field"><label>Vagas ofertadas (SUS)/mês <span class="pill info" style="font-size:10px;vertical-align:middle;margin-left:4px">Capacidade</span></label><input id="bvagas-${i}" type="number" min="0" value="${b.vagasMes||0}" placeholder="0" /><small>Total de vagas SUS disponibilizadas por este equipamento por mês.</small></div>
+        </div>
+      </div>`).join("");
+    state.equipamentos.braquiterapia.forEach((_,i)=>{
+      $(`#bserie-${i}`).addEventListener("input",ev=>state.equipamentos.braquiterapia[i].serie=ev.target.value);
+      $(`#bfab-${i}`).addEventListener("change",ev=>state.equipamentos.braquiterapia[i].fabricante=ev.target.value);
+      $(`#bmodelo-${i}`).addEventListener("change",ev=>state.equipamentos.braquiterapia[i].modelo=ev.target.value);
+      $(`#bano-${i}`).addEventListener("input",ev=>state.equipamentos.braquiterapia[i].ano=ev.target.value);
+      $(`#bmodo-${i}`).addEventListener("change",ev=>state.equipamentos.braquiterapia[i].modoAquisicao=ev.target.value);
+      $(`#bstatus-${i}`).addEventListener("change",ev=>state.equipamentos.braquiterapia[i].status=ev.target.value);
+      $(`#bvagas-${i}`)?.addEventListener("input",ev=>state.equipamentos.braquiterapia[i].vagasMes=Number(ev.target.value));
+    });
+    wrap.querySelectorAll(".btn-remove").forEach(btn=>btn.addEventListener("click",()=>{state.equipamentos.braquiterapia.splice(Number(btn.dataset.idx),1);redraw();}));
+  };
+  has.addEventListener("change",redraw); redraw();
+  addBtn.addEventListener("click",()=>{state.equipamentos.braquiterapia.push({serie:"",fabricante:"Varian",modelo:"GammaMedplus",ano:"",status:"Operacional",modoAquisicao:"Próprio",vagasMes:0});redraw();});
+}
+
+function setupTurnos(){
+  ["diurno","vespertino","noturno","fimSemana"].forEach(k=>{
+    $(`#turno-${k}`)?.addEventListener("input",ev=>{
+      state.equipamentos.turnos[k]=Number(ev.target.value||0);
+      $("#cap-semana").textContent=capSemanal();
+      $("#cap-mes").textContent=capMensal();
+    });
+    $(`#turno-h-${k}`)?.addEventListener("input",ev=>{
+      state.equipamentos.turnos[k+'Hora']=ev.target.value;
+    });
+  });
+}
+
+function renderEquipamentosSuccess(){
+  state.equipamentos.completed=true;
+  content.innerHTML=`
+    <section class="page-card success-screen">
+      <div class="success-icon"><span aria-hidden="true" style="font-style:normal">✅</span></i></div>
+      <h2>Equipamentos cadastrados com sucesso!</h2>
+      <p>Os dados foram submetidos e estão aguardando validação pela equipe do Ministério da Saúde.</p>
+      <div style="margin:var(--sp-5) auto"><span class="pill warning" style="font-size:14px;padding:var(--sp-2) var(--sp-5)"><span aria-hidden="true" style="font-style:normal">⏳</span></i> Aguardando validação do MS — SLA 48h</span></div>
+      <div class="message info" style="max-width:600px;margin:var(--sp-4) auto;text-align:left"><span aria-hidden="true" style="font-style:normal">ℹ</span></i>
+        <div><strong>Próximos passos</strong><br/>Após validação, o sistema calculará automaticamente as vagas disponíveis com base nos equipamentos e turnos cadastrados. Em seguida, cadastre os pacientes em tratamento.</div>
+      </div>
+      <div class="actions">
+        <button class="btn primary lg" onclick="navigate('#/pacientes')"><span aria-hidden="true" style="font-style:normal">👥</span></i> Gerenciar Pacientes</button>
+        <button class="btn secondary" onclick="navigate('#/dashboard')"><span aria-hidden="true" style="font-style:normal">📈</span></i> Dashboard</button>
+        <button class="btn tertiary" onclick="navigate('#/equipamentos/aceleradores')"><span aria-hidden="true" style="font-style:normal">✏</span></i> Editar</button>
+      </div>
+    </section>`;
+}
+
+// ══════════════════════════════════════════════════════════════
+//  PACIENTES
+// ══════════════════════════════════════════════════════════════
+const cidRef = { C50:"Mama (15 slots ref.)", C61:"Próstata (28 slots ref.)", C53:"Colo do útero (25 slots ref.)", C34:"Pulmão (30 slots ref.)", C67:"Bexiga (20 slots ref.)", C18:"Cólon (25 slots ref.)" };
+const sigtapRef = {
+  "03.04.01.009-0": { desc: "Radioterapia de mama", mod: "Radioterapia Externa", frac: 15 },
+  "03.04.01.012-0": { desc: "Radioterapia de próstata", mod: "Radioterapia Externa", frac: 28 },
+  "03.04.01.010-3": { desc: "Radioterapia de colo de útero", mod: "Radioterapia Externa", frac: 25 },
+  "03.04.01.013-8": { desc: "Braquiterapia de próstata", mod: "Braquiterapia", frac: 5 },
+  "03.04.01.016-2": { desc: "Braquiterapia ginecológica", mod: "Braquiterapia", frac: 5 },
+  "03.04.01.026-0": { desc: "Radioterapia conformada 3D", mod: "Radioterapia Externa", frac: 30 }
+};
+const cidSigtapMap = {
+  C50: ["03.04.01.009-0", "03.04.01.026-0"], C61: ["03.04.01.012-0", "03.04.01.013-8", "03.04.01.026-0"], 
+  C53: ["03.04.01.010-3", "03.04.01.016-2", "03.04.01.026-0"], C34: ["03.04.01.026-0"], 
+  C67: ["03.04.01.026-0"], C18: ["03.04.01.026-0"]
+};
+
+function renderPacientes() {
+  const ativos=state.pacientes.filter(p=>p.status==="Em tratamento");
+  const concluidos=state.pacientes.filter(p=>p.status==="Concluído");
+
+  content.innerHTML=`
+    <section class="hero">
+      <h2><span aria-hidden="true" style="font-style:normal">👥</span></i> Gestão de Pacientes</h2>
+      <p>Registre e acompanhe os pacientes em tratamento ativo. A atualização semanal é obrigatória para manutenção do incentivo financeiro.</p>
+    </section>
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:var(--sp-3)">
+      <div style="display:flex;gap:var(--sp-3)">
+        <div class="kpi" style="padding:var(--sp-3) var(--sp-5);min-width:0"><p class="label">Em tratamento</p><p class="value">${ativos.length}</p></div>
+        <div class="kpi" style="padding:var(--sp-3) var(--sp-5);min-width:0"><p class="label">Concluídos</p><p class="value">${concluidos.length}</p></div>
+        <div class="kpi" style="padding:var(--sp-3) var(--sp-5);min-width:0"><p class="label">Total registrados</p><p class="value">${state.pacientes.length}</p></div>
+      </div>
+      <div style="display:flex;gap:var(--sp-3)">
+        <button class="btn secondary" onclick="navigate('#/pacientes/atualizar')"><span aria-hidden="true" style="font-style:normal">↺</span></i> Atualização semanal</button>
+        <button class="btn primary" onclick="navigate('#/pacientes/novo')"><span aria-hidden="true" style="font-style:normal">+</span></i> Novo paciente</button>
+      </div>
+    </div>
+    <div class="message warning"><span aria-hidden="true" style="font-style:normal">🔔</span></i><div><strong>Lembrete:</strong> A janela de atualização semanal está aberta. Atualize o status dos pacientes antes do fechamento de domingo. Serviços sem atualização por 4 semanas têm o incentivo suspenso.</div></div>
+    <div class="page-card">
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="ativos">Em tratamento (${ativos.length})</button>
+        <button class="tab-btn" data-tab="todos">Todos (${state.pacientes.length})</button>
+      </div>
+      <div id="tab-ativos" class="tab-panel active">
+        <table class="data-table">
+          <thead><tr><th>CPF (hash)</th><th>CID / Tumor</th><th>Modalidade</th><th>Progresso</th><th>Slots restantes</th><th>Cidade</th><th>Ações</th></tr></thead>
+          <tbody>
+            ${ativos.map(p=>{
+              const restantes=p.fracoes-p.realizadas;
+              const semanasRest=Math.ceil(restantes/5);
+              return `<tr>
+                <td style="font-family:monospace;font-size:13px">${p.cpf}</td>
+                <td><span class="pill info">${p.cid}</span><div style="font-size:11px;color:var(--gray-60);margin-top:2px">${cidRef[p.cid]?.split(" (")[0]||""}</div></td>
+                <td style="font-size:13px">${p.modalidade}</td>
+                <td>
+                  <div style="font-size:12px;margin-bottom:4px">${p.realizadas}/${p.fracoes}</div>
+                  <div class="progress-bar-wrap"><div class="progress-bar-fill blue" style="width:${Math.round(p.realizadas/p.fracoes*100)}%"></div></div>
+                </td>
+                <td><span class="pill ${restantes<=5?'warning':'neutral'}">${restantes} (≈${semanasRest} sem.)</span></td>
+                <td style="font-size:13px">${p.cidade}</td>
+                <td><button class="btn sm secondary" onclick="showToast('info','Editar paciente','Funcionalidade disponível na versão de produção.')">Editar</button></td>
+              </tr>`;}).join("")}
+          </tbody>
+        </table>
+      </div>
+      <div id="tab-todos" class="tab-panel">
+        <table class="data-table">
+          <thead><tr><th>CPF (hash)</th><th>CID</th><th>Modalidade</th><th>Status</th><th>Slots</th><th>Cidade</th></tr></thead>
+          <tbody>
+            ${state.pacientes.map(p=>`<tr>
+              <td style="font-family:monospace;font-size:13px">${p.cpf}</td>
+              <td><span class="pill info">${p.cid}</span></td>
+              <td style="font-size:13px">${p.modalidade}</td>
+              <td><span class="pill ${p.status==='Em tratamento'?'info':'success'}">${p.status}</span></td>
+              <td>${p.realizadas}/${p.fracoes}</td>
+              <td style="font-size:13px">${p.cidade}</td>
+            </tr>`).join("")}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+
+  $$(".tab-btn").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      $$(".tab-btn").forEach(b=>b.classList.remove("active"));
+      $$(".tab-panel").forEach(p=>p.classList.remove("active"));
+      btn.classList.add("active");
+      $(`#tab-${btn.dataset.tab}`).classList.add("active");
+    });
+  });
+}
+
+function renderNovoPaciente() {
+  const cids=Object.keys(cidRef);
+  content.innerHTML=`
+    <section class="wizard">
+      <div class="wizard-header">
+        <h3><span aria-hidden="true" style="font-style:normal;color:var(--blue-warm-vivid-70)">👤</span></i> &nbsp;Cadastro de Paciente em Tratamento</h3>
+        <p>Registre um novo paciente em tratamento ativo no SIMRAD. O CPF será verificado na base nacional.</p>
+      </div>
+      <div class="wizard-body">
+        <div class="message info" style="margin-bottom:var(--sp-5)"><span aria-hidden="true" style="font-style:normal">🛡</span></i><div><strong>Proteção LGPD ativa.</strong> O CPF é armazenado criptografado. Somente o gestor federal tem acesso ao CPF em claro mediante log de auditoria.</div></div>
+        <div class="field-grid" style="margin-bottom:var(--sp-4)">
+          <div class="field"><label class="required">CPF do paciente</label><input type="text" id="pac-cpf" placeholder="000.000.000-00" maxlength="14" /><small>Duplicidade nacional</small></div>
+          <div class="field"><label class="required">CID-10 (tumor)</label>
+            <select id="pac-cid">
+              <option value="">Selecione...</option>
+              ${cids.map(c=>`<option value="${c}">${c} — ${cidRef[c].split("(")[0].trim()}</option>`).join("")}
+            </select>
+          </div>
+          <div class="field"><label class="required">Código SIGTAP</label>
+            <select id="pac-sigtap" disabled>
+              <option value="">Selecione o CID primeiro</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-grid" style="margin-bottom:var(--sp-4)">
+          <div class="field"><label>Referência</label><div id="cid-ref" style="padding:var(--sp-3);background:var(--gray-2);border-radius:var(--radius-sm);font-size:13px;color:var(--gray-60)">Selecione CID</div></div>
+          <div class="field"><label class="required">Modalidade</label>
+            <input type="text" id="pac-modalidade" value="" placeholder="Preenchido via SIGTAP" disabled />
+          </div>
+          <div class="field"><label class="required">Estimativa de frações a serem realizadas</label><input type="number" id="pac-fracoes" placeholder="Ex: 15" min="1" max="99" /></div>
+        </div>
+        <div class="field-grid" style="margin-bottom:var(--sp-4)">
+          <div class="field"><label class="required">Data do Planejamento</label><input type="date" id="pac-plan" /></div>
+          <div class="field"><label class="required">Data de início</label><input type="date" id="pac-inicio" /></div>
+          <div class="field"><label>Frações realizadas</label><input type="number" id="pac-realizadas" placeholder="0" min="0" /></div>
+        </div>
+        <div class="field-grid" style="margin-bottom:var(--sp-4)">
+          <div class="field" style="display:flex;align-items:center;">
+            <label style="display:flex;align-items:center;gap:var(--sp-2);cursor:pointer;margin-top:10px;">
+              <input type="checkbox" id="pac-hipo" style="width:18px;height:18px;accent-color:var(--blue-warm-vivid-70)" /> Realiza Hipofracionamento
+            </label>
+          </div>
+          <div class="field"><label>Frequência semanal</label>
+            <select id="pac-freq">
+              <option>5 dias/semana (segunda a sexta)</option>
+              <option>3 dias/semana (hipofraccionado)</option>
+              <option>Outro esquema</option>
+            </select>
+          </div>
+          <div class="field"><label>Turno Previsto</label>
+            <select id="pac-turno">
+              <option value="Manhã">Manhã</option>
+              <option value="Tarde">Tarde</option>
+              <option value="Noite">Noite</option>
+            </select>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:var(--sp-4)"><label class="required">Cidade do paciente</label><input type="text" id="pac-cidade" placeholder="Digite a cidade e UF..." /><small>Cidade de residência (não do tratamento)</small></div>
+        <div id="cpf-alert"></div>
+      </div>
+      <div class="wizard-nav">
+        <button class="btn tertiary" onclick="navigate('#/pacientes')">Cancelar</button>
+        <div class="right">
+          <button class="btn secondary" onclick="navigate('#/pacientes')"><span aria-hidden="true" style="font-style:normal">←</span></i> Voltar</button>
+          <button class="btn primary" id="salvar-pac"><span aria-hidden="true" style="font-style:normal">✓</span></i> Registrar paciente</button>
+        </div>
+      </div>
+    </section>`;
+
+  $("#pac-cid").addEventListener("change", ev => {
+    const cid = ev.target.value;
+    const ref = cidRef[cid];
+    const refEl = $("#cid-ref");
+    if (ref) {
+      refEl.innerHTML = `<span class="pill info"><span aria-hidden="true" style="font-style:normal">ℹ</span></i> ${ref}</span>`;
+      const m = ref.match(/(\d+) slots/);
+      if (m) $("#pac-fracoes").value = m[1];
+      
+      const sigs = cidSigtapMap[cid] || [];
+      const sigSel = $("#pac-sigtap");
+      sigSel.disabled = false;
+      sigSel.innerHTML = `<option value="">Selecione...</option>` + sigs.map(s => `<option value="${s}">${s} — ${sigtapRef[s].desc}</option>`).join("");
+      $("#pac-modalidade").value = "";
+    } else {
+      refEl.textContent = "Selecione um CID para ver o parâmetro de referência.";
+      $("#pac-sigtap").innerHTML = `<option value="">Selecione o CID primeiro</option>`;
+      $("#pac-sigtap").disabled = true;
+      $("#pac-modalidade").value = "";
+    }
+  });
+
+  $("#pac-sigtap").addEventListener("change", ev => {
+    const s = ev.target.value;
+    if (s && sigtapRef[s]) {
+      $("#pac-modalidade").value = sigtapRef[s].mod;
+      if (sigtapRef[s].frac) $("#pac-fracoes").value = sigtapRef[s].frac;
+    } else {
+      $("#pac-modalidade").value = "";
+    }
+  });
+
+  $("#pac-cpf").addEventListener("input", ev => {
+    if (ev.target.value.length >= 11) {
+      $("#cpf-alert").innerHTML = `<div class="message warning"><span aria-hidden="true" style="font-style:normal">⚠</span></i><div><strong>Verificação nacional em andamento...</strong> Aguarde a resposta da base de dados.</div></div>`;
+      setTimeout(() => {
+        $("#cpf-alert").innerHTML = `<div class="message success"><span aria-hidden="true" style="font-style:normal">✅</span></i><div><strong>CPF disponível.</strong> Nenhum registro ativo encontrado na base nacional. Cadastro liberado.</div></div>`;
+      }, 1200);
+    }
+  });
+
+  $("#salvar-pac").addEventListener("click", () => {
+    const cpf=$("#pac-cpf").value, cid=$("#pac-cid").value, frac=$("#pac-fracoes").value, dt=$("#pac-inicio").value, cidade=$("#pac-cidade").value;
+    const sigtap=$("#pac-sigtap")?$("#pac-sigtap").value:"";
+    const plan=$("#pac-plan")?$("#pac-plan").value:"";
+    const turno=$("#pac-turno")?$("#pac-turno").value:"";
+    if (!cpf||!cid||!frac||!dt||!cidade||!sigtap||!plan) { showToast("error","Campos obrigatórios","Preencha todos os campos obrigatórios."); return; }
+    state.pacientes.push({ id:state.pacientes.length+1, cpf:"***"+cpf.slice(-7).slice(0,4)+"***", nome:"Novo paciente", cid, sigtap, dataPlanejamento:plan, modalidade:$("#pac-modalidade").value, fracoes:Number(frac), realizadas:Number($("#pac-realizadas").value||0), inicio:dt, status:"Em tratamento", cidade, hipofracionamento:$("#pac-hipo").checked, turnoPrevisto:turno });
+    showToast("success","Paciente registrado","O paciente foi cadastrado com sucesso.");
+    navigate("#/pacientes");
+  });
+}
+
+function renderAtualizarPacientes() {
+  const ativos=state.pacientes.filter(p=>p.status==="Em tratamento").sort((a,b)=>(a.fracoes-a.realizadas)-(b.fracoes-b.realizadas));
+  content.innerHTML=`
+    <section class="wizard">
+      <div class="wizard-header">
+        <h3><span aria-hidden="true" style="font-style:normal;color:var(--blue-warm-vivid-70)">↺</span></i> &nbsp;Atualização Semanal de Pacientes</h3>
+        <p>Atualize o status de cada paciente ativo. Pacientes mais próximos de zerar os slots previstos são ordenados primeiro.</p>
+      </div>
+      <div class="wizard-body">
+        <div class="message info" style="margin-bottom:var(--sp-4)"><span aria-hidden="true" style="font-style:normal">📅</span></i><div>Semana de ${new Date().toLocaleDateString("pt-BR")} — <strong>${ativos.length} pacientes</strong> aguardando atualização.</div></div>
+        ${ativos.map(p=>`
+          <div class="repeat-item" style="margin-bottom:var(--sp-3)">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:var(--sp-3)">
+              <div>
+                <div style="font-family:monospace;font-size:13px;font-weight:700">${p.cpf}</div>
+                <div style="display:flex;gap:8px;margin-top:4px"><span class="pill info">${p.cid}</span><span class="pill neutral">${p.modalidade}</span></div>
+                <div style="font-size:12px;color:var(--gray-60);margin-top:4px">Slots: ${p.realizadas}/${p.fracoes} &nbsp;|&nbsp; ${p.cidade}</div>
+              </div>
+              <div style="display:flex;gap:var(--sp-3);align-items:flex-start;flex-wrap:wrap">
+                <div class="field" style="min-width:140px"><label style="font-size:12px">Frações Realizadas na Semana</label><input type="number" min="0" max="5" value="${Math.min(5, Math.max(0, p.fracoes - p.realizadas))}" style="width:100%" /></div>
+                <div class="field" style="min-width:180px">
+                  <label style="font-size:12px">Status</label>
+                  <select class="status-select" data-id="${p.id}">
+                    <option value="ativo">Em tratamento ativo</option>
+                    <option value="concluido">Tratamento concluído</option>
+                    <option value="suspensao_manutencao">Suspensão temporária: manutenção de equipamento</option>
+                    <option value="intercorrencia">Suspensão temporária: intercorrência clínica</option>
+                    <option value="obito">Óbito</option>
+                    <option value="transferencia">Encaminhamento com pactuação aprovada</option>
+                    <option value="desistencia">Desistência/abandono</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="context-fields" id="ctx-${p.id}" style="margin-top:var(--sp-3)"></div>
+          </div>`).join("")}
+      </div>
+      <div class="wizard-nav" style="flex-wrap: wrap; gap: var(--sp-4);">
+        <label style="display:flex;align-items:center;gap:var(--sp-2);cursor:pointer;font-size:13px;color:var(--gray-60)">
+          <input type="checkbox" style="width:16px;height:16px;accent-color:var(--blue-warm-vivid-70)" /> Atualização referente a semana anterior (feita fora do prazo)
+        </label>
+        <div style="flex:1"></div>
+        <button class="btn tertiary" onclick="navigate('#/pacientes')">Cancelar</button>
+        <div class="right">
+          <button class="btn primary" id="salvar-atualizacao"><span aria-hidden="true" style="font-style:normal">✓</span></i> Salvar atualização semanal</button>
+        </div>
+      </div>
+    </section>`;
+
+  $$(".status-select").forEach(sel => {
+    sel.addEventListener("change", ev => {
+      const id = ev.target.dataset.id;
+      const val = ev.target.value;
+      const ctx = $(`#ctx-${id}`);
+      let html = "";
+      if (val === "concluido") {
+        html = `<div style="display:flex;gap:12px;background:var(--gray-2);padding:10px;border-radius:4px;"><div class="field" style="flex:1"><label style="font-size:12px" class="required">Data de conclusão</label><input type="date" /></div><div class="field" style="flex:2"><label style="font-size:12px">Encaminhamento posterior (opcional)</label><input type="text" placeholder="Ex: Alta / Acompanhamento ambulatorial" /></div></div>`;
+      } else if (val === "intercorrencia" || val === "desistencia" || val === "suspensao_manutencao") {
+        html = `<div style="display:flex;gap:12px;background:var(--gray-2);padding:10px;border-radius:4px;"><div class="field" style="flex:1"><label style="font-size:12px" class="required">Data do evento</label><input type="date" /></div><div class="field" style="flex:2"><label style="font-size:12px">Justificativa (opcional)</label><input type="text" placeholder="Mais detalhes..." /></div></div>`;
+      } else if (val === "obito") {
+        html = `<div style="display:flex;gap:12px;background:var(--gray-2);padding:10px;border-radius:4px;"><div class="field" style="width:200px"><label style="font-size:12px" class="required">Data do óbito</label><input type="date" /></div></div>`;
+      } else if (val === "transferencia") {
+        html = `<div style="display:flex;gap:12px;background:var(--gray-2);padding:10px;border-radius:4px;"><div class="field" style="flex:1"><label style="font-size:12px" class="required">Data da pactuação</label><input type="date" /></div><div class="field" style="flex:2"><label style="font-size:12px" class="required">Referência do serviço de destino</label><input type="text" placeholder="Ex: Hospital Municipal..." /></div></div>`;
+      }
+      ctx.innerHTML = html;
+    });
+  });
+
+  $("#salvar-atualizacao").addEventListener("click",()=>{
+    showToast("success","Atualização salva","Status dos pacientes atualizado com sucesso. Lembrete semanal suprimido.");
+    state.notificacoes[0].lida=true;
+    navigate("#/pacientes");
+  });
+}
+
+// ══════════════════════════════════════════════════════════════
+//  INCENTIVOS FINANCEIROS
+// ══════════════════════════════════════════════════════════════
+function renderIncentivos() {
+  const ativos=state.pacientes.filter(p=>p.status==="Em tratamento").length;
+  const aceleradores=Math.max(1, state.equipamentos.aceleradores.length);
+  const media=Math.round(ativos/aceleradores);
+  const faixa=media>=60?3:media>=50?2:media>=40?1:0;
+  const pct=[0,10,20,30][faixa];
+  const faturamento=180000;
+  const valorIncentivo=faturamento*(pct/100);
+
+  content.innerHTML=`
+    <section class="hero">
+      <h2><span aria-hidden="true" style="font-style:normal">💰</span></i> Incentivos Aprovados</h2>
+      <p>Acompanhe sua faixa de incremento, pacientes contabilizados e projeção do valor do incentivo. Portaria GM/MS nº 8.516/2025.</p>
+    </section>
+    <div class="page-card">
+      <div class="section-header"><h3>Faixa atual — Competência ${new Date().toLocaleDateString("pt-BR",{month:"long",year:"numeric"})}</h3></div>
+      <div class="faixa-grid">
+        <div class="faixa-card">
+          <div class="faixa-header"><span style="font-size:13px;font-weight:700">Sem incremento</span>${faixa===0?'<span class="pill warning">ATUAL</span>':''}</div>
+          <div class="faixa-pct" style="color:var(--gray-60)">0%</div>
+          <p style="font-size:12px;color:var(--gray-60)">Abaixo do limiar mínimo</p>
+        </div>
+        <div class="faixa-card ${faixa===1?'ativa':''}">
+          <div class="faixa-header"><span style="font-size:13px;font-weight:700">Faixa 1 — Básica</span>${faixa===1?'<span class="pill info">ATUAL</span>':''}</div>
+          <div class="faixa-pct">10%</div>
+          <p style="font-size:12px;color:var(--gray-60)">Acima de 40 casos novos / acelerador</p>
+        </div>
+        <div class="faixa-card ${faixa===2?'ativa':''}">
+          <div class="faixa-header"><span style="font-size:13px;font-weight:700">Faixa 2 — Intermediária</span>${faixa===2?'<span class="pill info">ATUAL</span>':''}</div>
+          <div class="faixa-pct">20%</div>
+          <p style="font-size:12px;color:var(--gray-60)">Acima de 50 casos novos / acelerador</p>
+        </div>
+        <div class="faixa-card ${faixa===3?'ativa':''}">
+          <div class="faixa-header"><span style="font-size:13px;font-weight:700">Faixa 3 — Máxima</span>${faixa===3?'<span class="pill info">ATUAL</span>':''}</div>
+          <div class="faixa-pct">30%</div>
+          <p style="font-size:12px;color:var(--gray-60)">60 ou mais casos novos / acelerador</p>
+        </div>
+      </div>
+    </div>
+    <div class="dash-grid">
+      <div class="page-card">
+        <div class="section-header"><h3>Painel da competência atual</h3></div>
+        <div class="kpis" style="grid-template-columns:1fr 1fr;gap:var(--sp-3)">
+          <article class="kpi"><div class="kpi-icon blue"><span aria-hidden="true" style="font-style:normal">👥</span></i></div><p class="label">Pacientes ativos</p><p class="value">${ativos}</p><p class="sublabel">Semana atual</p></article>
+          <article class="kpi"><div class="kpi-icon ${faixa>0?'green':'yellow'}"><span aria-hidden="true" style="font-style:normal">%</span></i></div><p class="label">Incremento</p><p class="value">${pct}%</p><p class="sublabel">Faixa ${faixa}</p></article>
+          <article class="kpi"><div class="kpi-icon blue"><span aria-hidden="true" style="font-style:normal">🧾</span></i></div><p class="label">Faturamento base</p><p class="value">R$${(faturamento/1000).toFixed(0)}k</p><p class="sublabel">Estimado</p></article>
+          <article class="kpi"><div class="kpi-icon green"><span aria-hidden="true" style="font-style:normal">💰</span></i></div><p class="label">Valor do incentivo</p><p class="value">R$${(valorIncentivo/1000).toFixed(0)}k</p><p class="sublabel">Projeção</p></article>
+        </div>
+        ${faixa<3?`<div class="message info" style="margin-top:var(--sp-4)"><span aria-hidden="true" style="font-style:normal">↑</span></i><div>Faltam <strong>${(faixa===0?40:faixa===1?50:60)*aceleradores - ativos} pacientes ativos</strong> para atingir a próxima faixa de ${[10,20,30][faixa]}%. Aumente a produção para maximizar o incentivo.</div></div>`:'<div class="message success" style="margin-top:var(--sp-4)"><span aria-hidden="true" style="font-style:normal">🏆</span></i><div><strong>Faixa máxima atingida!</strong> Seu serviço está operando em alta capacidade com o incentivo máximo de 30%.</div></div>'}
+      </div>
+      <div class="page-card">
+        <div class="section-header"><h3>Histórico dos últimos 6 meses</h3></div>
+        <table class="data-table">
+          <thead><tr><th>Competência</th><th>Pacientes</th><th>Faixa</th><th>Incentivo</th></tr></thead>
+          <tbody>
+            ${[["Nov/2024","8","—","R$ 0"],["Dez/2024","11","—","R$ 0"],["Jan/2025","14","Faixa 1","R$ 16.200"],["Fev/2025","16","Faixa 1","R$ 18.000"],["Mar/2025",String(ativos),"Faixa "+faixa,"R$ "+(valorIncentivo/1000).toFixed(0)+"k (proj.)"]].map(([c,p,f,v])=>`
+              <tr>
+                <td>${c}</td>
+                <td>${p}</td>
+                <td>${f==="—"?'<span class="pill neutral">Sem incremento</span>':`<span class="pill info">${f}</span>`}</td>
+                <td style="font-weight:700">${v}</td>
+              </tr>`).join("")}
+          </tbody>
+        </table>
+        <div class="message info" style="margin-top:var(--sp-3);font-size:12px"><span aria-hidden="true" style="font-style:normal">ℹ</span></i><div>A faixa é determinada pelo maior pico semanal de pacientes ativos no mês, não pela média. Os limiares das Faixas 1 e 2 serão definidos em reunião com a SAES.</div></div>
+      </div>
+    </div>`;
+}
+
+// ══════════════════════════════════════════════════════════════
+//  PAINEL NACIONAL (Gestor Federal)
+// ══════════════════════════════════════════════════════════════
+function renderPainelNacional() {
+  const regioes=[
+    {nome:"Norte",saldo:-42,oferta:120,demanda:162,semaforo:"vermelho",prestadores:28},
+    {nome:"Nordeste",saldo:-87,oferta:310,demanda:397,semaforo:"vermelho",prestadores:62},
+    {nome:"Centro-Oeste",saldo:+3,oferta:118,demanda:115,semaforo:"amarelo",prestadores:31},
+    {nome:"Sudeste",saldo:+213,oferta:820,demanda:607,semaforo:"verde",prestadores:156},
+    {nome:"Sul",saldo:+54,oferta:287,demanda:233,semaforo:"verde",prestadores:70},
+  ];
+
+  content.innerHTML=`
+    <section class="hero">
+      <h2><span aria-hidden="true" style="font-style:normal">🗺</span></i> Painel Nacional — Oferta × Demanda</h2>
+      <p>Visão consolidada da situação nacional de radioterapia no SUS. Indicadores calculados automaticamente com base nos registros dos prestadores.</p>
+      <div class="hero-meta">
+        <span class="hero-chip"><span aria-hidden="true" style="font-style:normal">📅</span></i> Semana ${Math.ceil(new Date().getDate()/7)} de ${new Date().toLocaleDateString("pt-BR",{month:"long",year:"numeric"})}</span>
+        <span class="hero-chip"><span aria-hidden="true" style="font-style:normal">🏥</span></i> 347 prestadores ativos</span>
+        <span class="hero-chip"><span aria-hidden="true" style="font-style:normal">👥</span></i> 14.382 pacientes em tratamento</span>
+      </div>
+    </section>
+    <div class="kpis">
+      <article class="kpi"><div class="kpi-icon blue"><span aria-hidden="true" style="font-style:normal">📅</span></i></div><p class="label">Oferta nacional (sem.)</p><p class="value">1.655</p><p class="sublabel">Vagas disponíveis</p></article>
+      <article class="kpi"><div class="kpi-icon red"><span aria-hidden="true" style="font-style:normal">👥</span></i></div><p class="label">Demanda nacional</p><p class="value">1.514</p><p class="sublabel">Pacientes aguardando</p></article>
+      <article class="kpi"><div class="kpi-icon green"><span aria-hidden="true" style="font-style:normal">⚖</span></i></div><p class="label">Saldo nacional</p><p class="value">+141</p><p class="sublabel">Vagas livres</p></article>
+      <article class="kpi"><div class="kpi-icon yellow"><span aria-hidden="true" style="font-style:normal">⏱</span></i></div><p class="label">Tempo médio de espera</p><p class="value">28 dias</p><p class="sublabel">Nacional</p></article>
+    </div>
+    <div class="page-card">
+      <div class="section-header"><h3>Saldo por macrorregião</h3><span class="pill info"><span aria-hidden="true" style="font-style:normal">↺</span></i> Atualizado em tempo real</span></div>
+      <table class="data-table">
+        <thead><tr><th>Macrorregião</th><th>Status</th><th>Oferta</th><th>Demanda</th><th>Saldo</th><th>Prestadores</th><th>Ação</th></tr></thead>
+        <tbody>
+          ${regioes.map(r=>`<tr>
+            <td style="font-weight:700">${r.nome}</td>
+            <td><div style="display:flex;align-items:center;gap:8px"><div class="semaforo-dot ${r.semaforo}"></div><span class="pill ${r.semaforo==='verde'?'success':r.semaforo==='amarelo'?'warning':'danger'}">${r.semaforo==='verde'?'Hipersuficiente':r.semaforo==='amarelo'?'Equilíbrio':'Hipossuficiente'}</span></div></td>
+            <td>${r.oferta}</td>
+            <td>${r.demanda}</td>
+            <td style="font-weight:800;color:${r.saldo>0?'var(--green-cool-vivid-50)':r.saldo===0?'var(--gray-60)':'var(--red-vivid-50)'}">${r.saldo>0?'+':''}${r.saldo}</td>
+            <td>${r.prestadores}</td>
+            <td><button class="btn sm secondary" onclick="showToast('info','Drill-down','Visualização detalhada por UF disponível na versão de produção.')">Detalhar</button></td>
+          </tr>`).join("")}
+        </tbody>
+      </table>
+    </div>
+    <div class="dash-grid">
+      <div class="page-card">
+        <div class="section-header"><h3>Projeção de vagas — próximas 12 semanas</h3></div>
+        ${[["4 semanas","Nacional","+312 vagas"],["8 semanas","Nacional","+589 vagas"],["12 semanas","Nacional","+841 vagas"],["4 semanas","Norte","+22 vagas"],["4 semanas","Nordeste","+67 vagas"]].map(([p,r,v])=>`
+          <div class="semaforo-item"><div><div style="font-weight:600;font-size:13px">${p}</div><div style="font-size:11px;color:var(--gray-60)">${r}</div></div><strong style="color:var(--blue-warm-vivid-70)">${v}</strong></div>`).join("")}
+        <div class="message info" style="margin-top:var(--sp-3);font-size:12px"><span aria-hidden="true" style="font-style:normal">ℹ</span></i><div>Projeção baseada nos ciclos ativos de 14.382 pacientes. Taxa de desconto conservadora de 10% aplicada.</div></div>
+      </div>
+      <div class="page-card">
+        <div class="section-header"><h3>Alertas pendentes de ação</h3></div>
+        ${[["danger","Nordeste","87 pacientes sem vaga há mais de 4 semanas"],["warning","Norte","28 pacientes sem vaga há mais de 2 semanas"],["info","Centro-Oeste","Saldo próximo de zero — monitorar"],["warning","CACON-SP-003","4 semanas sem atualização — incentivo em risco"]].map(([t,l,m])=>`
+          <div class="message ${t}" style="margin-bottom:8px;padding:10px 12px">${icon(t==="danger"?"fa-circle-xmark":t==="warning"?"fa-triangle-exclamation":"fa-circle-info")}
+            <div><strong style="font-size:13px">${l}</strong><div style="font-size:12px;margin-top:2px">${m}</div></div>
+          </div>`).join("")}
+        <button class="btn secondary" style="width:100%;margin-top:var(--sp-3)" onclick="navigate('#/gestor/equipamentos')"><span aria-hidden="true" style="font-style:normal">🔧</span></i> Gerenciar equipamentos</button>
+      </div>
+    </div>`;
+}
+
+// ══════════════════════════════════════════════════════════════
+//  NOTIFICAÇÕES
+// ══════════════════════════════════════════════════════════════
+function renderNotificacoes() {
+  content.innerHTML=`
+    <section class="hero">
+      <h2><span aria-hidden="true" style="font-style:normal">🔔</span></i> Notificações</h2>
+      <p>Central de alertas, lembretes e comunicações do SIMRAD. Configure seus canais de recebimento no perfil do serviço.</p>
+    </section>
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:var(--sp-3);margin-bottom:var(--sp-2)">
+      <div><span class="pill danger">${state.notificacoes.filter(n=>!n.lida).length} não lidas</span></div>
+      <button class="btn sm secondary" id="marcar-todas">Marcar todas como lidas</button>
+    </div>
+    <div class="page-card">
+      ${state.notificacoes.map((n,i)=>`
+        <div class="message ${n.tipo} ${n.lida?'':''}${i<state.notificacoes.length-1?'" style="margin-bottom:var(--sp-3)':''}">
+          ${icon(n.tipo==="warning"?"fa-triangle-exclamation":n.tipo==="success"?"fa-circle-check":n.tipo==="info"?"fa-circle-info":"fa-circle-xmark")}
+          <div style="flex:1">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start">
+              <strong>${n.titulo}</strong>
+              <div style="display:flex;gap:8px;align-items:center">
+                ${!n.lida?`<span class="pill danger" style="font-size:10px">Nova</span>`:''}
+                <button class="btn sm tertiary" data-notif="${i}" style="padding:2px 8px">Marcar lida</button>
+              </div>
+            </div>
+            <div style="margin-top:4px;font-size:13px">${n.texto}</div>
+          </div>
+        </div>`).join("")}
+    </div>`;
+
+  $$("[data-notif]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      state.notificacoes[Number(btn.dataset.notif)].lida=true;
+      updateNotifBadge();
+      renderNotificacoes();
+    });
+  });
+  $("#marcar-todas")?.addEventListener("click",()=>{
+    state.notificacoes.forEach(n=>n.lida=true);
+    updateNotifBadge();
+    renderNotificacoes();
+    showToast("success","Lidas","Todas as notificações foram marcadas como lidas.");
+  });
+}
+
+// ══════════════════════════════════════════════════════════════
+//  ENCAMINHAMENTOS
+// ══════════════════════════════════════════════════════════════
+function renderEncaminhamentos() {
+  // estado local da tela — passo do wizard de novo encaminhamento
+  // 0=lista, 1=selecionar paciente, 2=selecionar serviço, 3=confirmar
+  if (typeof renderEncaminhamentos._step === 'undefined') renderEncaminhamentos._step = 0;
+  if (typeof renderEncaminhamentos._pacSel === 'undefined') renderEncaminhamentos._pacSel = null;
+  if (typeof renderEncaminhamentos._srvSel === 'undefined') renderEncaminhamentos._srvSel = null;
+
+  function draw() {
+    const step = renderEncaminhamentos._step;
+    const pacSel = renderEncaminhamentos._pacSel;
+    const srvSel = renderEncaminhamentos._srvSel;
+
+    // ── Cabeçalho fixo ──
+    const header = `
+      <section class="hero" style="margin-bottom:var(--sp-4)">
+        <h2>↔ Encaminhamentos</h2>
+        <p>Pactuação de encaminhamento de pacientes entre serviços. Vagas ficam bloqueadas por 48h ao solicitar. CPF é transferido automaticamente após confirmação.</p>
+      </section>`;
+
+    // ── PASSO 0: tela principal com lista + botão novo ──
+    if (step === 0) {
+      const statusPill = s => {
+        if (s === 'Confirmado')            return `<span class="pill success">✓ Confirmado</span>`;
+        if (s === 'Aguardando confirmação') return `<span class="pill warning">⏳ Aguardando</span>`;
+        return `<span class="pill neutral">🔍 Em análise</span>`;
+      };
+
+      content.innerHTML = header + `
+        <div class="page-card" style="margin-bottom:var(--sp-4)">
+          <div class="section-header">
+            <h3>Encaminhamentos ativos (${state.encaminhamentos.length})</h3>
+            <button class="btn sm primary" id="btn-novo-enc">+ Novo encaminhamento</button>
+          </div>
+          ${state.encaminhamentos.length === 0 ? `<p style="color:var(--gray-60);padding:var(--sp-4) 0">Nenhum encaminhamento registrado.</p>` : `
+          <table class="data-table">
+            <thead><tr><th>Paciente</th><th>CID</th><th>Origem</th><th>Destino</th><th>Dist.</th><th>Status</th><th>SLA</th><th></th></tr></thead>
+            <tbody>
+              ${state.encaminhamentos.map(e=>`
+                <tr>
+                  <td style="font-family:monospace;font-size:13px">${e.cpf}</td>
+                  <td><span class="pill info">${e.cid}</span></td>
+                  <td style="font-size:13px">${e.origem}</td>
+                  <td style="font-size:13px">${e.destino}</td>
+                  <td style="font-size:13px">${e.dist}</td>
+                  <td>${statusPill(e.status)}</td>
+                  <td style="font-size:12px;color:${e.slaHoras?'var(--gold-vivid-20,#e5a000)':'var(--gray-40)'}">${e.slaHoras ? e.slaHoras+'h restantes' : '—'}</td>
+                  <td>${e.status==='Aguardando confirmação'?`<button class="btn sm danger" onclick="cancelarEnc(${e.id})">Cancelar</button>`:''}</td>
+                </tr>`).join('')}
+            </tbody>
+          </table>`}
+        </div>
+        <div class="message info">ℹ <div>Encaminhamentos não respondidos em <strong>48h</strong> são desbloqueados automaticamente. Distância máxima padrão: <strong>150 km</strong>.</div></div>`;
+
+      document.getElementById('btn-novo-enc').addEventListener('click', () => {
+        renderEncaminhamentos._step = 1;
+        draw();
+      });
+
+    // ── PASSO 1: selecionar paciente da fila de demanda ──
+    } else if (step === 1) {
+      const demandaDisp = state.demanda.filter(p => !state.encaminhamentos.find(e => e.pacienteId === p.id));
+
+      content.innerHTML = header + `
+        <div class="page-card">
+          <div class="wizard-steps" style="margin-bottom:var(--sp-5)">
+            <div class="step active"><span class="step-indicator">1</span><span class="step-label">Selecionar paciente</span></div>
+            <div class="step"><span class="step-indicator">2</span><span class="step-label">Escolher serviço</span></div>
+            <div class="step"><span class="step-indicator">3</span><span class="step-label">Confirmar</span></div>
+          </div>
+          <h4 style="margin-bottom:var(--sp-2)">Fila de demanda — pacientes aguardando encaminhamento</h4>
+          <p style="color:var(--gray-60);font-size:14px;margin-bottom:var(--sp-4)">Selecione o paciente que será encaminhado. Apenas pacientes sem encaminhamento ativo são exibidos.</p>
+          ${demandaDisp.length === 0 ? `<div class="message success">✅ <div>Todos os pacientes da fila já possuem encaminhamento ativo.</div></div>` : `
+          <div class="radio-group" id="pac-list">
+            ${demandaDisp.map(p=>`
+              <label class="radio-option ${pacSel && pacSel.id===p.id?'selected':''}" data-pac-id="${p.id}" style="cursor:pointer">
+                <input type="radio" name="pac-sel" value="${p.id}" ${pacSel && pacSel.id===p.id?'checked':''} style="display:none"/>
+                <div style="flex:1">
+                  <div style="display:flex;align-items:center;gap:var(--sp-3);margin-bottom:4px">
+                    <strong>${p.nome}</strong>
+                    <span class="pill info" style="font-size:11px">${p.cid}</span>
+                    <span class="pill ${p.urgencia==='Alta'?'danger':'neutral'}" style="font-size:11px">${p.urgencia==='Alta'?'⚠ Urgente':'Normal'}</span>
+                  </div>
+                  <div style="font-size:13px;color:var(--gray-60)">
+                    📍 ${p.cidade} &nbsp;|&nbsp; Origem: ${p.origem} &nbsp;|&nbsp; ⏱ ${p.diasEspera} dias aguardando
+                  </div>
+                </div>
+              </label>`).join('')}
+          </div>`}
+          <div class="wizard-nav" style="margin-top:var(--sp-5)">
+            <button class="btn tertiary" id="enc-cancelar">Cancelar</button>
+            <div class="right">
+              <button class="btn secondary" id="enc-voltar">← Voltar</button>
+              <button class="btn primary" id="enc-prox1">Avançar →</button>
+            </div>
+          </div>
+        </div>`;
+
+      document.getElementById('enc-cancelar').addEventListener('click', () => { renderEncaminhamentos._step=0; renderEncaminhamentos._pacSel=null; renderEncaminhamentos._srvSel=null; draw(); });
+      document.getElementById('enc-voltar').addEventListener('click',   () => { renderEncaminhamentos._step=0; draw(); });
+      document.getElementById('enc-prox1').addEventListener('click', () => {
+        if (!renderEncaminhamentos._pacSel) { showToast('error','Selecione um paciente','Escolha um paciente da fila antes de avançar.'); return; }
+        renderEncaminhamentos._step=2; draw();
+      });
+      document.querySelectorAll('.radio-option[data-pac-id]').forEach(el => {
+        el.addEventListener('click', () => {
+          document.querySelectorAll('.radio-option[data-pac-id]').forEach(o=>o.classList.remove('selected'));
+          el.classList.add('selected');
+          const id = Number(el.dataset.pacId);
+          renderEncaminhamentos._pacSel = state.demanda.find(p=>p.id===id);
+        });
+      });
+
+    // ── PASSO 2: selecionar serviço com vaga ──
+    } else if (step === 2) {
+      const servicosFiltrados = state.servicos.filter(s => s.dist <= 150 || s.dist === 0);
+
+      content.innerHTML = header + `
+        <div class="page-card">
+          <div class="wizard-steps" style="margin-bottom:var(--sp-5)">
+            <div class="step done"><span class="step-indicator">✓</span><span class="step-label">Paciente selecionado</span></div>
+            <div class="step active"><span class="step-indicator">2</span><span class="step-label">Escolher serviço</span></div>
+            <div class="step"><span class="step-indicator">3</span><span class="step-label">Confirmar</span></div>
+          </div>
+          <div class="message info" style="margin-bottom:var(--sp-4)">ℹ
+            <div>Paciente: <strong>${pacSel.nome}</strong> — ${pacSel.cid} — ${pacSel.cidade} &nbsp;|&nbsp; Urgência: <strong class="${pacSel.urgencia==='Alta'?'text-danger':''}">${pacSel.urgencia}</strong></div>
+          </div>
+          <h4 style="margin-bottom:var(--sp-2)">Serviços com vagas disponíveis</h4>
+          <p style="color:var(--gray-60);font-size:14px;margin-bottom:var(--sp-4)">Serviços dentro do raio de 150 km. Selecione o destino para o encaminhamento.</p>
+          <div class="radio-group" id="srv-list">
+            ${servicosFiltrados.map(s=>`
+              <label class="radio-option ${srvSel && srvSel.id===s.id?'selected':''}" data-srv-id="${s.id}" style="cursor:pointer">
+                <input type="radio" name="srv-sel" value="${s.id}" ${srvSel && srvSel.id===s.id?'checked':''} style="display:none"/>
+                <div style="flex:1">
+                  <div style="display:flex;align-items:center;gap:var(--sp-3);flex-wrap:wrap;margin-bottom:4px">
+                    <strong>${s.nome}</strong>
+                    <span class="pill neutral" style="font-size:11px">${s.habilitacao}</span>
+                    ${s.dist===0?`<span class="pill success" style="font-size:11px">Mesmo município</span>`:`<span class="pill info" style="font-size:11px">${s.dist} km</span>`}
+                  </div>
+                  <div style="font-size:13px;color:var(--gray-60);display:flex;gap:var(--sp-5);flex-wrap:wrap">
+                    <span>📍 ${s.cidade}</span>
+                    <span>🟢 <strong>${s.vagasImediatas}</strong> vagas imediatas</span>
+                    <span>📅 <strong>${s.vagasProjetadas}</strong> vagas nas próx. 4 semanas</span>
+                  </div>
+                </div>
+              </label>`).join('')}
+          </div>
+          <div class="wizard-nav" style="margin-top:var(--sp-5)">
+            <button class="btn tertiary" id="enc-cancelar2">Cancelar</button>
+            <div class="right">
+              <button class="btn secondary" id="enc-voltar2">← Voltar</button>
+              <button class="btn primary" id="enc-prox2">Avançar →</button>
+            </div>
+          </div>
+        </div>`;
+
+      document.getElementById('enc-cancelar2').addEventListener('click', () => { renderEncaminhamentos._step=0; renderEncaminhamentos._pacSel=null; renderEncaminhamentos._srvSel=null; draw(); });
+      document.getElementById('enc-voltar2').addEventListener('click',   () => { renderEncaminhamentos._step=1; draw(); });
+      document.getElementById('enc-prox2').addEventListener('click', () => {
+        if (!renderEncaminhamentos._srvSel) { showToast('error','Selecione um serviço','Escolha o serviço de destino antes de avançar.'); return; }
+        renderEncaminhamentos._step=3; draw();
+      });
+      document.querySelectorAll('.radio-option[data-srv-id]').forEach(el => {
+        el.addEventListener('click', () => {
+          document.querySelectorAll('.radio-option[data-srv-id]').forEach(o=>o.classList.remove('selected'));
+          el.classList.add('selected');
+          const id = Number(el.dataset.srvId);
+          renderEncaminhamentos._srvSel = state.servicos.find(s=>s.id===id);
+        });
+      });
+
+    // ── PASSO 3: revisão e confirmação ──
+    } else if (step === 3) {
+      content.innerHTML = header + `
+        <div class="page-card">
+          <div class="wizard-steps" style="margin-bottom:var(--sp-5)">
+            <div class="step done"><span class="step-indicator">✓</span><span class="step-label">Paciente</span></div>
+            <div class="step done"><span class="step-indicator">✓</span><span class="step-label">Serviço</span></div>
+            <div class="step active"><span class="step-indicator">3</span><span class="step-label">Confirmar</span></div>
+          </div>
+          <h4 style="margin-bottom:var(--sp-4)">Revisão da pactuação</h4>
+          <div class="summary-grid" style="margin-bottom:var(--sp-5)">
+            <div class="summary-card">
+              <div class="kpi-icon blue" style="width:36px;height:36px;font-size:16px">👤</div>
+              <h4>Paciente</h4>
+              ${sr('Nome',          pacSel.nome)}
+              ${sr('CPF (hash)',    pacSel.cpf)}
+              ${sr('CID-10',        pacSel.cid)}
+              ${sr('Cidade',        pacSel.cidade)}
+              ${sr('Origem',        pacSel.origem)}
+              ${sr('Dias aguardando', pacSel.diasEspera + ' dias')}
+              ${sr('Urgência',      pacSel.urgencia)}
+            </div>
+            <div class="summary-card">
+              <div class="kpi-icon green" style="width:36px;height:36px;font-size:16px">🏥</div>
+              <h4>Serviço de destino</h4>
+              ${sr('Serviço',        srvSel.nome)}
+              ${sr('Habilitação',    srvSel.habilitacao)}
+              ${sr('Cidade',         srvSel.cidade)}
+              ${sr('Distância',      srvSel.dist + ' km')}
+              ${sr('Vagas imediatas',srvSel.vagasImediatas + ' vagas')}
+              ${sr('Vagas (4 sem.)', srvSel.vagasProjetadas + ' vagas')}
+            </div>
+          </div>
+          <div class="message warning" style="margin-bottom:var(--sp-4)">⚠
+            <div>Ao confirmar, a vaga ficará <strong>bloqueada por 48h</strong> aguardando resposta do serviço receptor. O CPF do paciente será transferido automaticamente após confirmação.</div>
+          </div>
+          <div class="wizard-nav">
+            <button class="btn tertiary" id="enc-cancelar3">Cancelar</button>
+            <div class="right">
+              <button class="btn secondary" id="enc-voltar3">← Voltar</button>
+              <button class="btn primary" id="enc-confirmar">✓ Confirmar pactuação</button>
+            </div>
+          </div>
+        </div>`;
+
+      document.getElementById('enc-cancelar3').addEventListener('click', () => { renderEncaminhamentos._step=0; renderEncaminhamentos._pacSel=null; renderEncaminhamentos._srvSel=null; draw(); });
+      document.getElementById('enc-voltar3').addEventListener('click',   () => { renderEncaminhamentos._step=2; draw(); });
+      document.getElementById('enc-confirmar').addEventListener('click', () => {
+        // Registrar encaminhamento no state
+        const novoId = Math.max(0, ...state.encaminhamentos.map(e=>e.id)) + 1;
+        state.encaminhamentos.push({
+          id:         novoId,
+          pacienteId: pacSel.id,
+          cpf:        pacSel.cpf,
+          cid:        pacSel.cid,
+          origem:     pacSel.origem,
+          destino:    srvSel.nome + ' – ' + srvSel.cidade,
+          dist:       srvSel.dist + ' km',
+          status:     'Aguardando confirmação',
+          slaHoras:   48,
+        });
+        // Remover paciente da fila de demanda
+        state.demanda = state.demanda.filter(p => p.id !== pacSel.id);
+        // Reduzir vagas do serviço
+        const srv = state.servicos.find(s=>s.id===srvSel.id);
+        if (srv && srv.vagasImediatas > 0) srv.vagasImediatas--;
+        // Reset e voltar à lista
+        renderEncaminhamentos._step = 0;
+        renderEncaminhamentos._pacSel = null;
+        renderEncaminhamentos._srvSel = null;
+        showToast('success','Pactuação registrada','Encaminhamento enviado. O serviço tem 48h para confirmar.');
+        draw();
+      });
+    }
+  }
+
+  // Função global para cancelar encaminhamento
+  window.cancelarEnc = function(id) {
+    const enc = state.encaminhamentos.find(e=>e.id===id);
+    if (!enc) return;
+    showModal('Cancelar encaminhamento', `Deseja cancelar o encaminhamento do paciente ${enc.cpf} para ${enc.destino}? A vaga será desbloqueada.`, [
+      { label:'Cancelar encaminhamento', class:'btn danger', action: () => {
+          state.encaminhamentos = state.encaminhamentos.filter(e=>e.id!==id);
+          showToast('info','Encaminhamento cancelado','Vaga desbloqueada e devolvida ao pool.');
+          draw();
+        }
+      },
+      { label:'Manter', class:'btn secondary', action: closeModal }
+    ]);
+  };
+
+  draw();
+}
+
+// ══════════════════════════════════════════════════════════════
+//  GESTOR DEMANDA
+// ══════════════════════════════════════════════════════════════
+function renderGestorDemanda() {
+  content.innerHTML=`
+    <section class="wizard">
+      <div class="wizard-header">
+        <h3><span aria-hidden="true" style="font-style:normal;color:var(--blue-warm-vivid-70)">≡</span></i> &nbsp;Registro de Demanda</h3>
+        <p>Registre a fila de pacientes aguardando radioterapia na sua região. O sistema identificará serviços com vagas no raio de 150 km.</p>
+      </div>
+      <div class="wizard-body">
+        <div class="field-grid" style="margin-bottom:var(--sp-5)">
+          <div class="field"><label class="required">CID principal (grupo)</label>
+            <select><option>C50 — Mama</option><option>C61 — Próstata</option><option>C53 — Colo do útero</option><option>C34 — Pulmão</option><option>Outro</option></select>
+          </div>
+          <div class="field"><label class="required">Quantidade de pacientes na fila</label><input type="number" min="1" placeholder="Ex: 8" /></div>
+          <div class="field"><label>Tempo médio de espera (dias)</label><input type="number" min="0" placeholder="Ex: 35" /></div>
+        </div>
+        <div class="field-grid" style="margin-bottom:var(--sp-5)">
+          <div class="field"><label class="required">Cidade de origem dos pacientes</label><input type="text" placeholder="Digite a cidade..." /></div>
+          <div class="field"><label>Urgência clínica</label>
+            <select><option>Eletivo — início em até 30 dias</option><option>Prioritário — início em até 2 semanas</option><option>Urgente — início imediato</option></select>
+          </div>
+          <div class="field"><label>Serviço de Referência</label><input type="text" placeholder="UNACON, serviço..." /></div>
+        </div>
+        <div class="message warning"><span aria-hidden="true" style="font-style:normal">⚠</span></i><div>Pacientes com urgência clínica (início em até 2 semanas) serão marcados como <strong>prioritários</strong> no sistema de regulação e aparecerão com destaque nos serviços com vagas disponíveis.</div></div>
+      </div>
+      <div class="wizard-nav">
+        <button class="btn tertiary" onclick="navigate('#/dashboard')">Cancelar</button>
+        <div class="right">
+          <button class="btn primary" onclick="showToast('success','Demanda registrada','A fila foi registrada. Serviços com vagas disponíveis aparecerão em Encaminhamentos.');navigate('#/encaminhamentos')"><span aria-hidden="true" style="font-style:normal">✓</span></i> Registrar demanda</button>
+        </div>
+      </div>
+    </section>`;
+}
+
+// ══════════════════════════════════════════════════════════════
+//  GESTOR EQUIPAMENTOS (Gestor Federal)
+// ══════════════════════════════════════════════════════════════
+function renderGestorEquipamentos() {
+  content.innerHTML=`
+    <section class="hero">
+      <h2><span aria-hidden="true" style="font-style:normal">⚕</span></i> Gestão de Equipamentos</h2>
+      <p>Painel de validação de equipamentos. Nenhuma alteração de capacidade instalada é refletida no painel nacional sem aprovação do gestor federal.</p>
+    </section>
+    <div class="kpis">
+      <article class="kpi"><div class="kpi-icon green"><span aria-hidden="true" style="font-style:normal">✅</span></i></div><p class="label">Em operação</p><p class="value">312</p><p class="sublabel">Aceleradores</p></article>
+      <article class="kpi"><div class="kpi-icon yellow"><span aria-hidden="true" style="font-style:normal">🔧</span></i></div><p class="label">Em manutenção</p><p class="value">24</p><p class="sublabel">Vagas reduzidas</p></article>
+      <article class="kpi"><div class="kpi-icon blue"><span aria-hidden="true" style="font-style:normal">⏳</span></i></div><p class="label">Em comissionamento</p><p class="value">8</p><p class="sublabel">Aguardando liberação</p></article>
+      <article class="kpi"><div class="kpi-icon red"><span aria-hidden="true" style="font-style:normal">⏱</span></i></div><p class="label">Aguardando validação</p><p class="value">9</p><p class="sublabel">SLA em aberto</p></article>
+    </div>
+    <div class="page-card">
+      <div class="section-header"><h3>Pendências de validação</h3><span class="pill danger">9 aguardando</span></div>
+      <table class="data-table">
+        <thead><tr><th>Prestador</th><th>Equipamento</th><th>Tipo de alteração</th><th>SLA</th><th>Ação</th></tr></thead>
+        <tbody>
+          ${[
+            ["CACON Manaus","TrueBeam SN-2025-004","Novo equipamento","38h restantes"],
+            ["UNACON Belém","Elekta Infinity SN-2023-011","Manutenção programada","44h restantes"],
+            ["Complexo RT Fortaleza","Varian Clinac SN-2019-003","Retorno pós-manutenção","8h restantes ⚠️"],
+            ["Serviço Isolado BH","Elekta Versa HD SN-2022-007","Desativação","46h restantes"],
+          ].map(([p,eq,tipo,sla])=>`
+            <tr>
+              <td style="font-weight:600;font-size:13px">${p}</td>
+              <td style="font-family:monospace;font-size:12px">${eq}</td>
+              <td><span class="pill ${tipo==='Novo equipamento'?'info':tipo==='Retorno pós-manutenção'?'success':tipo==='Desativação'?'danger':'warning'}">${tipo}</span></td>
+              <td style="font-size:12px;color:${sla.includes('⚠️')?'var(--red-vivid-50)':'var(--gray-60)'}">${sla}</td>
+              <td style="display:flex;gap:8px">
+                <button class="btn sm success-btn" onclick="showToast('success','Aprovado','Alteração validada. Painel nacional atualizado.')"><span aria-hidden="true" style="font-style:normal">✓</span></i> Aprovar</button>
+                <button class="btn sm danger" onclick="showToast('error','Rejeitado','Alteração rejeitada. Prestador notificado.')"><span aria-hidden="true" style="font-style:normal">✕</span></i> Rejeitar</button>
+              </td>
+            </tr>`).join("")}
+        </tbody>
+      </table>
+    </div>
+    <div class="message info"><span aria-hidden="true" style="font-style:normal">ℹ</span></i><div>SLA de validação: <strong>24h para urgências</strong> (manutenção não programada) e <strong>48h para alterações programadas</strong>. Equipamentos aguardando validação não alteram a capacidade exibida no painel nacional.</div></div>`;
+}
+
+// ── Helpers ───────────────────────────────────────────────────
+function sr(label, value) {
+  return `<div class="summary-row"><span class="sr-label">${label}</span><span class="sr-value">${value}</span></div>`;
+}
+
+// ── Mobile Menu ───────────────────────────────────────────────
+const menuOverlay = $("#menu-overlay");
+function isMobile(){ return window.innerWidth <= 768; }
+function openMobileMenu(){
+  sideMenu.classList.add("mobile-open");
+  menuOverlay.classList.add("active");
+  document.body.style.overflow = "hidden";
+}
+function closeMobileMenu(){
+  sideMenu.classList.remove("mobile-open");
+  menuOverlay.classList.remove("active");
+  document.body.style.overflow = "";
+}
+function toggleMobileMenu(){
+  if(sideMenu.classList.contains("mobile-open")) closeMobileMenu();
+  else openMobileMenu();
+}
+
+// ── Global Event Listeners ────────────────────────────────────
+menuToggle.addEventListener("click", toggleMobileMenu);
+menuOverlay.addEventListener("click", closeMobileMenu);
+// Fecha menu ao navegar em mobile
+document.addEventListener("click", (e) => {
+  if(isMobile() && e.target.closest("#main-nav a")) closeMobileMenu();
+});
+headerAuthBtn.addEventListener("click",()=>{ if (!state.isAuthenticated) navigate("#/login"); });
+headerAvatarBtn.addEventListener("click",()=>{
+  showModal("Encerrar sessão?","Você será desconectado do SIMRAD e precisará autenticar novamente.",`<button class="btn tertiary" onclick="closeModal()">Cancelar</button><button class="btn primary" onclick="doLogout()">Sair</button>`);
+});
+$("#notif-btn")?.addEventListener("click",()=>{ if(state.profile) navigate("#/notificacoes"); });
+window.navigate = navigate;
+window.showToast = showToast;
+window.addEventListener("hashchange",render);
+// Fecha menu ao mudar de rota
+window.addEventListener("hashchange", () => { if(isMobile()) closeMobileMenu(); });
+if (!window.location.hash) window.location.hash="#/login";
+render();
+// ── Acessibilidade (footer) ──────────────────────────
+(function() {
+  let fontScale = 1;
+  const html = document.documentElement;
+  document.addEventListener('click', function(e) {
+    if (e.target.id === 'btn-font-plus') {
+      fontScale = Math.min(fontScale + 0.1, 1.4);
+      html.style.fontSize = (fontScale * 100) + '%';
+      e.target.classList.add('active');
+      document.getElementById('btn-font-minus')?.classList.remove('active');
+    }
+    if (e.target.id === 'btn-font-minus') {
+      fontScale = Math.max(fontScale - 0.1, 0.8);
+      html.style.fontSize = (fontScale * 100) + '%';
+      e.target.classList.add('active');
+      document.getElementById('btn-font-plus')?.classList.remove('active');
+    }
+    if (e.target.id === 'btn-contrast') {
+      document.body.classList.toggle('high-contrast');
+      e.target.classList.toggle('active');
+    }
+  });
+})();
+
+</script>
+</body>
+</html>
